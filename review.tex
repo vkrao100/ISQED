@@ -1,0 +1,54 @@
+This document is the camera ready revision of ISQED 2021 submission (Number 220) titled "Word-Level Multi-Fix Rectifiability of Finite Field Arithmetic Circuits"
+
+\par {\it{\bf Reviewer-1}}\\
+ISQED may not be the best place for this manuscript. The paper corresponds to the quality design focus of the symposium. However, it would be more "at home" if submitted to one of the specialist journals in the filed. This is because of the nature of the material presented in the manuscript. It would be relatively hard for the audience to comprehend it within a short period normally available for an oral presentation or poster display. Besides, the page limitations associated with the symposium makes it even more challenging. Finally, it would be important to strengthen the quality electronic design aspects of the proposed approach so as to look at it from the practical implementation point of view (it is just very briefly considered in Section V of the manuscript).       
+The paper formatting is different from that recommended by the ISQED, so it needs to be changed.
+
+\par {\it{\bf Action:}}
+\bi
+\item Update the experiment section with description of the implementation.
+\item Confirm the camera ready submission format in IEEE express pdf tool.
+\ei
+
+\par {\it{\bf Reviewer-2}}\\
+Q. The writing can be improved at many places.
+
+For example, in the first sentence of the abstract, the concepts rectify and rectification are not defined.
+
+A big problem is that there is no experimental comparison with previous methods that are summarized in Sect. I and II, and that process one target at a time.
+Those previous methods could be run on the many targets, one at a time, and in parallel on all targets---what would be the time required in such cases?
+
+Also, the presented method is demonstrated only for very small numbers of targets <= 7, and it is not clear how it will scale.
+
+How was m selected for each benchmark?
+
+"Results show that the execution times for PF, ... are independent of the nature of the bug." -> explain why
+
+The big question after reading the paper is: so what?
+
+The big issues are: 1) presentation that is not very clear; 2) no comparison with previous methods; and 3) small number of targets, m.
+
+\par {\it{\bf Action:}}
+\bi
+\item Describe the words rectify/rectification in abstract or use a predefined alternative
+\item Explain why the contemporary approaches were not compared (Already mentioned in experiments section).
+Maybe reiterate on what step of the check, these approaches fail.
+\item 
+\ei
+
+\par {\it{\bf Reviewer-3}}\\
+Q. Some Comments -- The word "buggy" should be replaced with "with bugs".  Some of the text denoting numbers, such as figure nos. or section nos. have a red box around them - these should be removed to improve readability.  Table 1 caption should be improved to "Required time (s)". Also  for Table 1, for each benchmark, some information about number of bugs injected should be included in the table and I would also be interested in seeing memory usage of this approach for each of the benchmarks.
+
+Relevance - This is an outstanding paper that addresses the problem of proving the rectifiability of a finite field arithmetic circuit with bugs, at a given set of nets as targets.
+
+Importance - Finite field arithmetic circuits such as multipliers are very important in computers that perform data crunching applications, and correcting bugs in them using a limited set of nets as targets is an important problem with a lot of opportunities for continued research.
+
+Technical Originality and Innovation - The author(s) describe(s) and develop(s) a novel technique by combining multiple fields of mathematics, to overcome capacity limitations of existing approaches based upon Boolean functions and SAT solvers. 
+
+Technical Content and Validity - The paper develops an original approach for the multifix (with m target nets) rectifiability problem of finite-field arithmetic circuits based upon word-level rectifiability checking.  The strength of the paper lies in the novel modeling approach used for the multifix rectification problem. The efficiency of the method is derived from interpreting the targets as a bit vector and enabling word-level reasoning, with new mathematical insights to overcome challenges associated with a composite field. The authors provide a lot of experimental results on runtime.
+
+Promotes Quality - This paper promotes the quality of finite field arithmetic circuits by allowing the efficient proving of rectifiability of such circuits with bugs at a given set of target nets.
+
+Writing Style and Clarity -- This is a well-written paper and has clarity, but takes time to read and process because it is heavily mathematical (which is a good thing).
+
+\par {\it{\bf Response:}}

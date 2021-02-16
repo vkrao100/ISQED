@@ -1,0 +1,81 @@
+This is BibTeX, Version 0.99d
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: sample-sigconf.aux
+Reallocating 'name_of_file' (item size: 1) to 21 items.
+The style file: ACM-Reference-Format.bst
+Reallocating 'name_of_file' (item size: 1) to 12 items.
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Reallocating 'wiz_functions' (item size: 4) to 6000 items.
+Database file #1: sample-base.bib
+Warning--entry type for "Bornmann2019" isn't style-file defined
+--line 1602 of file sample-base.bib
+Warning--entry type for "AnzarootPBM14" isn't style-file defined
+--line 1619 of file sample-base.bib
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Reallocating 'glb_str_end' (item size: 4) to 20 items.
+Reallocating 'glb_str_ptr' (item size: 4) to 20 items.
+Reallocating 'global_strs' (item size: 1) to 4000000 items.
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Warning--empty organization in Ablamowicz07
+Warning--empty organization in UMassCitations
+Warning--empty chapter and pages in Editor00
+Warning--page numbers missing in Editor00a
+Warning--empty author in 2004:ITE:1009386.1010128
+Warning--empty address in Knuth97
+Warning--articleno or eid field, but no numpages field, in Lee05
+Warning--page numbers missing in both pages and numpages fields in Lee05
+Warning--articleno or eid, but no pages or numpages field in Lee05
+Warning--unrecognized DOI value [99.9999/woot07-S422]
+Warning--articleno or eid field, but no numpages field, in rous08
+Warning--page numbers missing in both pages and numpages fields in rous08
+Warning--articleno or eid, but no pages or numpages field in rous08
+Warning--page numbers missing in both pages and numpages fields in SaeediJETC10
+Warning--unrecognized DOI value [99.9999/woot07-S422]
+Warning--empty organization in Thornburg01
+Warning--empty organization in TUGInstmem
+Warning--empty organization in TUGInstmem
+Warning--empty year in CTANacmart
+Warning--empty organization in CTANacmart
+You've used 38 entries,
+            5945 wiz_defined-function locations,
+            1778 strings with 23214 characters,
+and the built_in function-call counts, 36077 in all, are:
+= -- 4407
+> -- 1002
+< -- 4
++ -- 315
+- -- 386
+* -- 2480
+:= -- 3764
+add.period$ -- 203
+call.type$ -- 38
+change.case$ -- 218
+chr.to.int$ -- 36
+cite$ -- 56
+duplicate$ -- 3337
+empty$ -- 2367
+format.name$ -- 411
+if$ -- 8270
+int.to.chr$ -- 4
+int.to.str$ -- 1
+missing$ -- 70
+newline$ -- 418
+num.names$ -- 295
+pop$ -- 1053
+preamble$ -- 1
+purify$ -- 544
+quote$ -- 0
+skip$ -- 1186
+stack$ -- 0
+substring$ -- 2830
+swap$ -- 327
+text.length$ -- 51
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 912
+warning$ -- 20
+while$ -- 290
+width$ -- 0
+write$ -- 781
+(There were 22 warnings)

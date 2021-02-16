@@ -1,0 +1,75 @@
+This is BibTeX, Version 0.99d
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: ISQED_cr.aux
+Reallocating 'name_of_file' (item size: 1) to 9 items.
+The style file: IEEEtran.bst
+Reallocating 'name_of_file' (item size: 1) to 6 items.
+Reallocating 'name_of_file' (item size: 1) to 8 items.
+Reallocating 'name_of_file' (item size: 1) to 4 items.
+Reallocating 'name_of_file' (item size: 1) to 8 items.
+Reallocating 'name_of_file' (item size: 1) to 6 items.
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Reallocating 'wiz_functions' (item size: 4) to 6000 items.
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Database file #1: vikas.bib
+Database file #2: utkarsh.bib
+Repeated entry---line 501 of file utkarsh.bib
+ : @misc{DGPS_410
+ :               ,
+I'm skipping whatever remains of this entry
+Database file #3: tim.bib
+Repeated entry---line 251 of file tim.bib
+ : @inproceedings{abc
+ :                   ,
+I'm skipping whatever remains of this entry
+Database file #4: xiaojun.bib
+Database file #5: logic.bib
+-- IEEEtran.bst version 1.14 (2015/08/26) by Michael Shell.
+-- http://www.michaelshell.org/tex/ieeetran/bibtex/
+-- See the "IEEEtran_bst_HOWTO.pdf" manual for usage information.
+
+Done.
+You've used 16 entries,
+            4087 wiz_defined-function locations,
+            921 strings with 10181 characters,
+and the built_in function-call counts, 11162 in all, are:
+= -- 813
+> -- 285
+< -- 70
++ -- 151
+- -- 53
+* -- 516
+:= -- 1612
+add.period$ -- 32
+call.type$ -- 16
+change.case$ -- 14
+chr.to.int$ -- 174
+cite$ -- 16
+duplicate$ -- 816
+empty$ -- 1054
+format.name$ -- 68
+if$ -- 2652
+int.to.chr$ -- 0
+int.to.str$ -- 16
+missing$ -- 154
+newline$ -- 71
+num.names$ -- 16
+pop$ -- 414
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 2
+skip$ -- 878
+stack$ -- 0
+substring$ -- 419
+swap$ -- 593
+text.length$ -- 12
+text.prefix$ -- 0
+top$ -- 5
+type$ -- 16
+warning$ -- 0
+while$ -- 45
+width$ -- 18
+write$ -- 160
+(There were 2 error messages)

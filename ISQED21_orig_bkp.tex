@@ -1,0 +1,158 @@
+\documentclass[conference]{IEEEtran}
+% \documentclass[sigconf]{acmart}
+%\documentclass{article}
+
+%% set page size to US letter
+%\special{papersize=8.5in,11in}
+%\setlength{\pdfpageheight}{\paperheight}
+%\setlength{\pdfpagewidth}{\paperwidth}
+
+% \pagenumbering{gobble}
+
+% \DeclareMathAlphabet{\mathtsl}{OT1}{ptm}{m}{sl}
+% \RequirePackage{amssymb}
+% \usepackage[left=0.7in,right=0.7in,top=0.7in,bottom=0.7in]{geometry}
+% \usepackage{hyperref}
+\usepackage{xspace}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage{amsbsy}
+%\usepackage{amsthm}
+\usepackage{graphicx}
+\usepackage{helvet}
+\usepackage{enumerate}
+\usepackage{amsmath}
+\usepackage{amstext}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage{multirow}
+\usepackage{subfig}
+\usepackage{comment}
+\usepackage{cases}
+\usepackage{xcolor}
+\usepackage{epstopdf}
+% \usepackage[normalem]{ulem}
+\usepackage{diagbox}
+\usepackage{cleveref}
+\usepackage{bm}
+\usepackage{setspace}
+\usepackage{amsthm}
+
+% \usepackage{titlesec}
+% \titlespacing*{\section}{0pt}{1.1\baselineskip}{\baselineskip}
+
+\input{myformulae.tex}
+
+% New command for the line spacing.
+% \newcommand{\ls}[1]
+%     {\dimen0=\fontdimen6\the\font
+%      \lineskip=#1\dimen0
+%      \advance\lineskip.5\fontdimen5\the\font
+%      \advance\lineskip-\dimen0
+%      \lineskiplimit=.9\lineskip
+%      \baselineskip=\lineskip
+%      \advance\baselineskip\dimen0
+%      \normallineskip\lineskip
+%      \normallineskiplimit\lineskiplimit
+%      \normalbaselineskip\baselineskip
+%      \ignorespaces
+%     }
+% New command for the table bnotes.
+% \def\tabnote#1{{\small{#1}}}
+
+% \theoremstyle{plain}
+%the following is for space before and after align or other equation environment.
+\theoremstyle{definition}
+\newtheorem{Algorithm}{Algorithm}[section]
+\newtheorem{Definition}{Definition}[section]
+\newtheorem{Proposition}{Proposition}[section]
+\newtheorem{Lemma}{Lemma}[section]
+\newtheorem{Theorem}{Theorem}[section]
+\newtheorem{Proof}{Proof}[section]
+\newtheorem{Corollary}{Corollary}[section]
+\newtheorem{Conjecture}{Conjecture}[section]
+\newtheorem{Problem}{Problem}[section]
+\newtheorem{Notation}{Notation}[section]
+\newtheorem{Setup}{Problem Setup}[section]
+
+\theoremstyle{plain}
+\newtheorem{Example}{Example}[section]
+
+
+%to autoref throermes and definitions
+\providecommand*\Theoremautorefname{Theorem}
+\providecommand*\Lemmaautorefname{Lemma}
+\providecommand*\Definitionautorefname{Definition}
+
+%%set spacing between table columns
+% \setlength{\tabcolsep}{3pt}
+% % \setlength\intextsep{0pt}
+% \setcounter{secnumdepth}{3}
+
+\begin{document}
+% \hypersetup{pageanchor=false}
+% \hypersetup{nolinks=true}
+%% \setlength{\abovedisplayskip}{0pt}
+%% \setlength{\belowdisplayskip}{0pt}
+%% \setlength{\abovedisplayshortskip}{0pt}
+%% \setlength{\belowdisplayshortskip}{0pt}
+\title{\Large{ \sc Word-Level Multi-Fix Rectifiability of Finite Field Arithmetic Circuits}
+}
+  % \thanks{This research is funded in part by the
+  %  US Na4onal Science Foundation grants CCF-1619370 and
+  %  CCF-1320385.}}
+
+\author{Vikas Rao$^1$, Irina Ilioaea$^2$, Haden Ondricek$^1$, Priyank Kalla$^1$,  and Florian Enescu$^2$\\
+$^1$Electrical \& Computer Engineering, University of Utah\\
+$^2$Mathematics \& Statistics, Georgia State University
+}
+% \input{review.tex}
+% \pagebreak
+\maketitle
+% \institute{}
+%\thispagestyle{empty}
+%%%%%%%%%%%%%%%%%%%% Include your files here %%%%%%%%%%%%%%%%%%%%%
+\input{abstract_isqed.tex}
+\input{intro_isqed.tex}
+\input{prelim_isqed_pk.tex}	
+\input{poly_model_isqed_pk.tex}
+\input{comp_setup_isqed_pk1.tex}
+\input{rectify_isqed_pk.tex}
+\input{experiments_isqed.tex}
+%%%%%%%%%%%%%%%%%%%% The bibliography %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%List of our publications
+% in utkarsh.bib
+% Utkarsh:ETS19
+% Utkarsh:book-chapter
+% Utkarsh:VLSI18
+% Utkarsh:IWLS18
+% Utkarsh:tcad17
+% Arpitha:MSthesis-2019
+% % in vikas.bib
+% Vkrao:IWLS18
+% Vkrao:FMCAD18
+% signal selection papers
+% SS_Roland:DAC19
+% SS_Fujita:ISCAS19
+% SS_Fujita:ISQED17
+% SS_Alan:DAC18
+% SS_Huang:ICCAD17
+% SS_Roland:DAC18
+% SS_Goersch:ASPDAC17
+% %+multi-fix
+% MF_Roland:ICCAD10
+% MF_Huang:DAC11
+% MF_Huang:DATE12
+% MF_Rolf:ISVLSI18
+% %+synthesis
+% SYN_Huang:ICCAD19
+% 
+
+\bibliographystyle{IEEEtran}
+% \bibliographystyle{ACM-Reference-Format}
+\bibliography{vikas,utkarsh,tim,xiaojun,logic}
+
+\end{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%  End of IEEEsample.tex  %%%%%%%%%%%%%%%%%%%%%%%%%%%

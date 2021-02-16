@@ -1,0 +1,244 @@
+\section{A Unified Framework for MFR}\label{sec:comps}
+
+%After detecting the presence of bug(s) in the design,
+% Having been provided with a set of $m$ targets from $C$, our objective now is to 
+% ascertain whether these internal nets admit MFR; i.e. does there exist an $m$-bit patch
+% function which rectifies $C$ at these targets? 
+% We assume that these targets were provided beforehand or the heuristics 
+% proposed in~\cite{SS_Alan:DAC18,SS_Fujita:ISCAS19,SS_Roland:DAC19} were applied to select the same.
+%In order to ascertain whether these $m$-targets
+%indeed admit MFR, we set up a unified algebraic decision framework as
+%follows. 
+
+%\subsection{Word-level Formulation of Patch
+%Function}\label{subsec:word_form}
+{\it Word-level Rectification Patch:} 
+Given a set of $m$-targets, let $W = \{w_0,w_1,\dots,w_{m-1}\}$ denote the $m$-bit vector word,
+over which an MFR check is to be performed. 
+%where the admissibility of the $m$-bit rectification patch is to be
+%ascertained.
+Here, $w_0,\dots,w_{m-1}\in \{x_1,\dots,x_d\}$
+are internal nets of $C$. A rectification patch corresponds to 
+a function mapping $f_W: \F_2^{|X_{PI}|}\rightarrow\F_{2^m}$, and
+represented as a polynomial function $U(X_{PI}) \in
+\F_{2^m}[X_{PI}]$. Here, $U$ is an {\it unknown} polynomial
+with variables from $X_{PI}$, and coefficients from $\F_{2^m}$. If the circuit admits rectification at these targets, then it implies that, algebraically, $W = U(X_{PI})$ rectifies the circuit. 
+
+Such a setup {\it interprets} $U$ as a polynomial function which
+evaluates to values in the field $\F_{2^m}$. To construct $\F_{2^m}$,
+we {\it select} a degree-$m$ primitive polynomial $P_m(X)\in\F_2[X]$, with
+$\beta$ as a root ($P_m(\beta)=0$), such that 
+$\F_{2^m} = \F_2[X] \pmod{ P_m(X)}$. Note that any degree-$m$
+primitive polynomial ($P_m(X)$) can be selected. This implies that
+$\beta$ is a PE of $\F_{2^m}$. Thus, the rectification patch polynomial
+function can be represented as: $f_W: W + U(X_{PI}) = W +
+\sum_{i=0}^{m-1}\be^iw_i$.  
+% \begin{Example}
+% \label{target_ex}
+% Continuing with our example Ex. \ref{verify_ex}, we analyze the remainder $r$ of verification.
+% Note that since the intersection of the fan-in cones of all outputs in $\Oa$ is empty, 
+% $C$ doesn't admit single-fix rectification. Further, let $\Ic$ represent the initial cost
+% associated with each net in $\In$ assigned based on their respective topological levels from PI.
+% Since, each of the nets $\{d_0,e_0,d_2,d_5\}$ lie in the intersection of 2 outputs, we change their 
+% cost accordingly.
+
+% {\small
+% \begin{flalign*}
+% &coefficients(r) = \{ \ga^0,\ga^1,\ga^2\} \implies \Oa = \{z_0,z_1,z_2\} \\
+% &\In = \{z_0,z_1,z_2,d_0,f_0,e_2,e_3,e_0,e_1,rr_0,d_6,d_7,d_8,d_1,d_2,d_3,r_0,\\
+% &\quad d_5,rr_1,r_1,rr_2,r_2,r_3,rr_3,d_4,r_4,rr_4\} \\
+% &\Ic = \{7,7,7,6,6,6,6,5,3,3,5,5,5,4,4,2,2,2,2,1,1,0,0,0,\\
+% &\quad -1,-1,-1\} 
+% \end{flalign*}
+% }
+% We partition the set $\Oa$ into 2 ($m$) distinct non-empty subsets
+% and compute the corresponding intersection covers. Any individual
+% combination of nets from these subsets will always cover the set $\Oa$. 
+% {\small
+% \begin{flalign*}
+% &\Oa = \{\{z_0,z_1\},\{z_2\}\} \\
+% &\M = \{\M_0:\{r_4,d_4,r_3,r_2,r_1,r_0,d_3,e_1\},\\
+% &\quad\M_1:\{rr_4,rr_3,rr_2,rr_1,d_5,rr_0,d_6,d_7,d_8,e_2,e_3,z_2\}\}
+% \end{flalign*}
+% }
+
+% We will pick net $r_3$ from $\M_0$ as the first target ($w_0=r_3$) and $rr_3$ 
+% from $\M_1$ as the second target ($w_1=rr_3$). The multi-fix patch
+% will be modeled as a $2$-bit operand over ${\mathbb{F}}_{2^2}$ constructed as 
+% $\Ftwo[X]\pmod{P_2(X)}$ with $\be$ as one of its root, i.e. $P_2(\be)=0$.
+% Fig. \ref{fig:mas_bug_W}(b) illustrates $W$ representing the word-level 
+% patch as a function of nets $r_3$ and $rr_3$,$ f_w: W+r_3+\be \cdot rr_3$. 
+% RTTO with modified variable order:
+% $\{Z\}>\{A>B\}>\{z_0>z_1>z_2\}>\{d_0>f_0>e_2>e_3\}>\{e_0>e_1>rr_0>d_6>d_7>d_8\}>\{d_1>d_2>d_3>r_0>d_5>rr_1\}>\{r_1>rr_2\}>\{r_2>{\bf{W}}>r_3>rr_3\}>\{d_4>r_4>rr_4\}>\{a_0>a_1>a_2>b_0>b_1>b_2\}.$ 
+% \end{Example}
+
+%\subsection{Composite Field Framework}\label{subsec:comp_fwrk}
+{\it Composite Field Framework:} The circuit $C$ is modeled over
+$\Fkn$ and the rectification patch is modeled over $\Fkm$. However, the \Grobner basis 
+computations for MFR checking can only be performed over a ring with
+coefficients from a single field. We select the field $\Fkk$
+of $2^k$ elements, where $k$ is the least common multiple of $m$ and
+$n$ ($k=LCM(m,n)$). Thus $\Fkk$ corresponds to the smallest field
+containing both $\F_{2^m}$ and $\F_{2^n}$.
+% , i.e. $\Fkn \subset \Fkk$ and $\Fkm \subset \Fkk$.
+% , thereby allowing every $m$-bit and $n$-bit vector word
+% to be construed as elements in a single field $\Fkk$.
+
+\par To construct $\Fkk$, we must identify
+a degree-$k$ primitive polynomial $P_{k}(X)\in\F_2[X]$, and a
+corresponding primitive element $\alpha$ such that
+$P_k(\alpha)=0$. While there may exist many degree-$k$ primitive
+polynomials, the selected $P_k(X)$ needs to conform to specific
+conditions imposed by the {\it given} $P_n(X)$, and
+the {\it selected} $P_m(X)$.
+%, such that $P_n(\gamma) =
+%P_m(\beta)=0$.
+For this purpose, we exploit the concepts of polynomial
+factorization in finite fields \cite{factorization_fq:survey}. 
+
+%Further, care
+%should be taken while  
+%composing the vanishing polynomials: $x_i^2-x_i$ for the bit-level
+%variables, $W^{2^m}-W$ for the $m$-bit bit-vectors, and 
+%$Z^{2^n}-Z$ for the $n$-bit bit-vectors.
+
+%% To select the primitive polynomial $P_k(X)$, and a corresponding
+%% primitive element $\alpha$, we employ the concept of univariate
+%% polynomial facorization in finite fields~\cite{factorization_fq:survey}.
+
+\begin{Problem}{[Univariate Polynomial Factorization (UPF)]}
+Given a monic univariate polynomial $f \in \Fq[x]$, where $\Fq$ is
+any finite field, find a complete factorization $f = f_1^{e_1}\cdot$ 
+$\dots f_l^{e_l}$, where $f_1,\dots, f_l$ are pairwise
+distinct monic irreducible polynomials in $\Fq[x]$, and
+$e_i\in \Z_{\geq 1}$ are positive integers.
+\end{Problem}
+
+Efficient algorithms to obtain such a factorization in finite fields
+are well-known \cite{factorization_fq:survey}. %\cite{kaltofen:issac97}, 
+%and they are implemented in computer algebra and computational number
+%theory tools, such as in \cite{DGPS_410} and \cite{ntl}. We employ
+% and we employ the implementation of \cite{ntl} to perform the
+% aforementioned UPF. 
+Given the primitive elements $\beta, \gamma$ of the fields 
+$\F_{2^m},\F_{2^n}$, respectively, let $\alpha$ be a PE of $\Fkk$,
+such that $\Fkk \supseteq \F_{2^m},\Fkn$. For the desired unified
+computational framework, we represent $\beta, \gamma$ in terms
+of $\alpha$. 
+
+As $\alpha \in \Fkk, \alpha^{2^k-1}=1$. Similarly, $\beta\in \Fkm$
+implies that $\beta^{2^{m}-1}=1$, and $\gamma\in\Fkn$ makes
+$\gamma^{2^n-1}=1$. Equating $\be^{2^m-1}=\ga^{2^n-1}=\alpha^{2^k-1} =
+1$, we obtain:
+% This can be achieved as:
+\vspace{-0.06in}
+\begin{equation}
+\label{word-level-rep}
+ \be = \al^{(2^k-1)/(2^m-1)} = \al^{\mu};~~~
+ \ga = \al^{(2^k-1)/(2^n-1)} = \al^{\lambda}
+\end{equation}
+\vspace{-0.2in}
+
+We show that the desired primitive polynomial
+$P_k(X)$ for $\F_2(\alpha)$ exists as a degree-$k$ common factor of
+$P_n(X^{\lambda})$ and $P_m(X^{\mu})$, and it can be found by performing
+their UPFs.
+
+%\begin{small}
+\begin{Theorem}\label{thm:Pk}
+Given primitive polynomials $P_n(X), P_m(X)$ $\in \F_2[X]$ of degrees
+$n,m$, respectively, along with $P_n(\gamma)= P_m(\beta)=0$. Let 
+$k=LCM(m,n)$ and $\alpha$ be a PE of $\Fkk$, such that
+$\beta=\alpha^\mu$ and $\gamma=\alpha^\lambda$, where
+$\mu={(2^k-1)/(2^m-1)}$ and $\lambda={(2^k-1)/(2^n-1)}$. Obtain UPFs
+$P_n(X^\lambda)=P_{n_1}^{a_1}(X)\cdot P_{n_2}^{a_2}(X)\cdots
+P_{n_l}^{a_l}(X)$, and $P_{m}(X^\mu)=P_{m_1}^{b_1}(X)\cdots
+P_{m_g}^{b_g}(X)$, in $\F_2[X]$. Then there exists a $P_{n_i}(X) \in
+\{P_{n_1}(X),\dots,P_{n_l}(X)\}$ and a $P_{m_j} (X) \in
+\{P_{m_1}(X),\dots,P_{m_g}(X)\}$ such that $P_k(X) = P_{n_i}(X) =
+P_{m_j}(X)$; i.e. $P_k(X) \in \F_2[X]$ exists as a common factor of $P_m(X^\mu)$
+and $P_n(X^\lambda)$ such that $P_k(X)$ is a degree-$k$ primitive polynomial 
+with $P_{k}(\alpha)=0$.
+\end{Theorem}
+%\end{small}
+
+\begin{proof}
+Since $\F_2 \subset \Fkn, \Fkm \subset \Fkk$, and
+$\alpha$ is given as a PE of $\Fkk$, then the minimal polynomial of
+$\alpha$ is a primitive polynomial. Denote it as $P_k(X)$. Then
+$P_k(\alpha)=0$, i.e. $\alpha$ is a root of $P_k(X)$. However,
+$P_m(\beta)=0 \implies P_m(\alpha^\mu)=0$. So $P_m(X^\mu)$ also has
+$\alpha$ as a root. This implies that $P_k(X)$ divides $P_m(X^\mu)$:
+$P_k(X) ~| ~ P_m(X^\mu)$. Similarly, $P_k(X) ~|~ P_n(X^\lambda)$. So
+$P_k(X)$ is a common factor of both $P_m(X^\mu)$ and
+$P_n(X^\lambda)$. Since $P_m(X^{\mu}), P_n(X^{\lambda}) \in \F_2[X]$,
+and their UPFs are also performed in $\F_2[X]$, $P_k(X) \in
+\F_2[X]$. Moreover, as $\alpha$ is a PE of $\Fkk$, and $P_k(X)$ is the
+minimal polynomial of $\alpha$, we have that $P_k(X)$ is a primitive
+polynomial as $\Fkk = \F_2(\alpha)$. Furthermore, by definition, as
+the minimal polynomial of $\alpha$, $P_k(X)$ has degree
+$=k$. This completes the proof. 
+\end{proof}
+% The polynomial $P_k(X)$ obtained from Thm. \ref{thm:Pk} can be used to
+% construct field $\Fkk = \F_2[X] \pmod{ P_k(X)}$, which encompasses the
+% fields corresponding to the circuit ($\Fkn$) and the patch
+% ($\Fkm$). Moreover, their respective PE's $\beta, \gamma$, can also be
+% related to the PE $\alpha$ of $\Fkk$ by means of
+% Eqn. (\ref{word-level-rep}). 
+
+
+\begin{Example}
+\label{composite_ex}
+{\it 
+Continuing with our rectification example of Fig. \ref{fig:mas_bug_W},
+assume that we are given $m=2$ targets: $w_0=r_3$, and $w_1=rr_3$.
+The multi-fix patch is modeled as a $2$-bit
+operand over $\F_{2^2}=\Ftwo[X]\pmod{P_2(X)=X^2+X+1}$ with
+$P_2(\be)=0$. It is given that the 3-bit circuit ($n=3$) is designed
+over {\small $\F_{2^3}=\F_2[X]\pmod{P_3(X)=X^3+X+1}$}.  
+%Note that we selected $P_2(X)=X^2+X+1$ since that is the only
+%primitive polynomial of degree 2. 
+With $k=LCM(m,n)=6$, $P_6(X)$ is computed as follows:
+
+Using Eqn. (\ref{word-level-rep}), we have $\gamma=\alpha^9,\beta=\alpha^{21}$. Perform UPFs:
+% \begin{multline*}
+% 	P_3(X^9) = (X^9)^3+(X^9)+1 =
+%   (X^6+X^5+1)(X^6+X^5+X^2+X+1)\\(X^6+X^4+X^3+X+1)(X^6+X^4+X^2+X+1)(X^3+X+1);\\
+% 	P_2(X^{21}) = (X^{21})^2+(X^{21})+1 =
+%   (X^6+X^5+1)(X^6+X^5+X^2+X+1)\\(X^6+X^4+X^3+X+1)(X^6+X^5+X^3+X^2+1)\\
+%   (X^6+X^5+X^4+X+1)(X^6+X+1)(X^6+X^3+1);
+% \end{multline*}
+\bi
+\item ${\scriptstyle P_3(X^9) = (X^9)^3+(X^9)+1 =
+  (X^6+X^5+X^2+X+1)(X^6+X^5+1)}$\\${\scriptstyle(X^6+X^4+X^3+X+1)(X^6+X^4+X^2+X+1)(X^3+X+1);}$
+\item ${\scriptstyle P_2(X^{21}) = (X^{21})^2+(X^{21})+1 =
+  (X^6+X^5+X^2+X+1)}$\\${\scriptstyle (X^6+X^5+1)(X^6+X^4+X^3+X+1)(X^6+X^5+X^3+X^2+1)
+  }$\\${\scriptstyle(X^6+X^5+X^4+X+1)(X^6+X+1)(X^6+X^3+1);}$
+\ei
+
+Among the degree-6 common factors of ${\scriptstyle P_3(X^9)}$ and
+${\scriptstyle P_2(X^{21})}$,  ${\scriptstyle X^6+X^5+X^2+X+1}$ is omitted
+since it is non-primitive.  We choose ${\scriptstyle P_6(X) =
+  X^6+X^5+1}$ as the required $P_k(X)$. 
+
+Note that if we (incorrectly) choose ${\scriptstyle P_6(X)=X^6 + X^3 +1}$, then it
+implies that for its root $\alpha$, we have:
+
+\vspace{-0.2in}
+\begin{small}
+\begin{align*}
+&\alpha^6 + \alpha^3 + 1 = 0; \implies (\alpha^3)(\alpha^6 +
+\alpha^3 + 1) = 0 ~(\text{multiply by}~\alpha^3)\\
+&\implies \alpha^9 + \alpha^6 + \alpha^3 = 0; \implies \gamma + 1 = 0,
+\stepcounter{equation}\tag{\theequation}\label{ll} 
+\end{align*}
+\end{small}
+\vspace{-0.2in}
+
+as $\alpha^9 = \gamma$ and $(\alpha^6 + \alpha^3) = 1$. However,
+$\gamma \neq 1$, as $\gamma$ is a PE of $\Fkn$. Therefore, selecting
+$P_k(X)$ that does not conform to Thm. \ref{thm:Pk} would lead to
+erroneous results.
+}
+\end{Example}
+\vspace{-0.12in}

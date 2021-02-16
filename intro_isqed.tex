@@ -1,0 +1,336 @@
+\section{Introduction}\label{sec:intro}
+Formal verification checks whether a circuit implementation
+($\impl$) conforms to its specification ($\spec$).  
+In cases where verification detects the presence of bugs,
+debugging and rectification are performed. Rectification entails
+identifying candidate nets (targets) %followed by a rectifiability check, 
+and determining whether the circuit can be patched at these 
+targets. If the targets admit rectification,
+%Once rectifiability at these nets is ascertained,
+corresponding rectification functions are computed which make 
+the $\impl$ conform to its $\spec$.
+This problem also manifests in engineering change orders (ECO) 
+-- where a current $\impl$ needs to be
+rectified (preferably, with local modifications) to match the ECO-modified
+$\spec$. As a result, the problem
+% Since early formulations of this problem were introduced \cite{Madre:ICCAD89,Sadowska:DAC95}, 
+has witnessed renewed interest by the logic synthesis, testing and verification
+communities~\cite{MF_Huang:DATE12,SS_Fujita:ISCAS19,SS_Roland:DAC19},
+etc. These approaches are successful in rectifying random-logic
+circuits which are employed in control-dominated applications; 
+However, they
+are infeasible for the rectification of arithmetic circuits.
+
+\par
+{\it This paper addresses the problem of ascertaining the rectifiability 
+of finite field arithmetic circuits with bugs at a given set of $m$ targets
+against a polynomial function (\spec)~over finite fields, such as
+those encountered in Elliptic Curve Cryptography}.
+Such circuits find application in cryptography and error-control
+codes. As arithmetic bugs may lead to security vulnerabilities
+\cite{crypto:bug_attacks}, their rectification is of utmost
+importance.
+% Our approach employs computer algebra
+% techniques over finite fields to identify whether the circuit
+% admits rectification at a given set of $m$ nets.
+% 
+% The problem is formulated at a high abstraction level
+% using bit-vector words, which allows us to determine the rectifiability 
+% of the circuit in an efficient manner.
+Our approach models the set of $m$ targets as a bit-vector, enabling 
+word-level reasoning, and utilizes techniques 
+from Symbolic Computer Algebra (SCA) to determine rectifiability. 
+The subsequent problem of computing rectification functions for these
+$m$ targets is beyond the scope of this paper. {\it Word-level
+  rectifiability checking} for arithmetic circuits is a challenging
+problem in its own right, and this manuscript covers its various
+facets. 
+ 
+% \par 
+% {\it Prior Work:} Contemporary approaches formulate rectification
+% using quantified Boolean formula solving,
+% %~\cite{scholl:2}, or using
+% Craig Interpolation (CI), or iterative SAT
+% solving~\cite{MF_Huang:DAC11,MF_Huang:DATE12,fujita:2015,SS_Fujita:ISQED17}.  
+% %  MF_Roland:ICCAD10,
+% Boolean function and SAT-based models are infeasible for rectification 
+% of buggy arithmetic circuits. Recent works attempt
+% rectification using computer algebra techniques for finite field 
+% circuits~\cite{Utkarsh:VLSI18,Vkrao:FMCAD18}, and also for integer
+% arithmetic circuits~\cite{farimah:2017:1,MF_Rolf:ISVLSI18}. 
+% However, these algebraic approaches address only
+% {\it single-fix} rectification -- where rectification is attempted
+% only at a {\it single net}. This is too restrictive, and depending on
+% the nature of the bugs, the circuit may not admit single-fix
+% rectification at all. In such cases, the correction has to be
+% attempted at multiple targets, say at $m$ distinct nets. This is
+% called {\it multi-fix} rectification in literature. The focus of
+% this paper is $m$-target {\it multi-fix rectifiability} (MFR) of finite field circuits. 
+
+\par 
+{\it Prior Work:}  
+Recent works attempt rectification using SCA techniques for finite field 
+circuits~\cite{Utkarsh:VLSI18,Vkrao:FMCAD18}, and for integer
+arithmetic circuits~\cite{farimah:2017:1,MF_Rolf:ISVLSI18}. 
+However, these algebraic approaches address only
+{\it single-fix} rectification -- where rectification is attempted
+only at a {\it single net}. This is too restrictive, and depending on
+the nature of the bugs, the circuit may not admit single-fix
+rectification. In such cases, the correction has to be
+attempted at multiple targets. This is
+called {\it multi-fix} rectification in literature. The focus of
+this paper is $m$-target {\it multi-fix rectifiability} (MFR) of finite field circuits. 
+
+% where multiple nets are identified as rectification {\it targets}, and
+% corresponding rectification patches are computed. 
+% Contemporary techniques in multi-fix rectification assume
+% availability of target locations.
+\par 
+Contemporary approaches formulate the rectifiability 
+checking problem inherently as part of a rectification procedure. 
+They use quantified Boolean formula solving,
+%~\cite{scholl:2}, or using
+Craig Interpolation, or iterative SAT
+solving~\cite{MF_Huang:DATE12,SS_Fujita:ISCAS19,SS_Alan:DAC18}.  
+%  MF_Roland:ICCAD10,
+% The preliminary MFR check technique~\cite{MF_Huang:DAC11} is incomplete
+% in deriving the necessary and sufficient conditions for an MFR check when a set of 
+% targets are provided a priori. The authors later present a complete approach \cite{MF_Huang:DATE12} 
+The approach~\cite{MF_Huang:DATE12} considers multiple targets simultaneously and 
+formulates the MFR check as a QBF. 
+The QBF is then translated to a SAT problem and solved iteratively using a cofactor reduction technique.
+More recent techniques use this QBF formulation coupled with heuristics which improve
+resource awareness in patch generation \cite{SS_Alan:DAC18}, and the selection of effective targets \cite{SS_Fujita:ISCAS19}. 
+The recent symbolic sampling approach~\cite{SS_Roland:DAC19} uses simulation to 
+identify targets and ascertain rectifiability.
+However, models based on Boolean functions and SAT solvers are infeasible to perform rectifiability checking 
+on arithmetic circuits. Our experiments show that contemporary SAT solvers fail to rectify finite field circuits beyond 16-bit operands.
+
+% Recently, an explicit enumeration approach to identify targets
+% was presented in~\cite{SS_Roland:DAC19}. The authors 
+% enumerate prime cubes of the characteristic function of all feasible targets 
+% and use them to construct an explicit list of targets. 
+% To achieve scalability, the method proposes 
+% modeling and analyzing Boolean reasoning queries in symbolic sampling domain. 
+% However, the authors do not discuss the application of the proposed technique to 
+% arithmetic circuits, hence an efficient/scalable solution is still desired.
+
+% the recent approach employs a sampling 
+
+
+% The signal selection heuristic (main contribution) proposed in \cite{SS_Roland:DAC19}
+% is orthogonal to the setup and approach presented in our paper.
+% However, the authors don't discuss the application of the proposed technique to 
+% arithmetic circuits, hence an efficient/scalable solution is still desired. 
+
+% In contrast, our proposed approach being word-level, ascertains
+% $m$-target rectifiability in one decision procedure.
+
+%or resolve a combination of such objectives, such as the symbolic
+%sampling approach of 
+% \cite{SS_Roland:DAC19}. {\it Limitations:} Since
+% the patches are partial and 
+% incremental, $m$-target rectifiability cannot be easily
+% predetermined. Rectification convergence is also dependent upon the
+% order in which the targets are selected for iterative patching. 
+%  This offers
+% better scalability, as well enables the selection of a minimum number
+% ($m$) of rectification targets for a given buggy circuit.
+
+%and also computes $m$-rectification functions in one-go.
+%%  Despite these breakthroughs, the problem of
+%% rectification of datapath circuits is still unsolved, hence a scalable
+%% solution to compute and synthesize subfunctions in arithmetic circuits
+%% is still desired. 
+
+%% Recently, an efficient approach on resource aware ECO patch 
+%% generation has been presented in~. A multi-fix approach
+%% with heuristics to select effective rectification targets has been presented in
+%% \cite{SS_Fujita:ISCAS19}. However, these techniques are also SAT and/or
+%% Craig-interpolation based, which are known to be infeasible for arithmetic
+%% circuits with large operand widths. 
+
+%% A robust ECO approach to derive patches with minimal 
+%% impact on the heavily optimized existing $\impl$ against 
+%% a structurally dissimilar ECO-evolved $\spec$ has been presented in
+%% . The authors propose enumerating rectification points 
+%% functionally and match the circuitry of patches implicitly to maximize reuse of 
+%% existing logic in the $\impl$. To achieve scalability, the method proposes 
+%% modeling and analyzing Boolean reasoning queries in symbolic sampling domain. 
+%% The signal selection heuristic (main contribution) proposed in \cite{SS_Roland:DAC19}
+%% is orthogonal to the setup and approach presented in our paper.
+%% However, the authors don't discuss the application of the proposed technique to 
+%% arithmetic circuits, hence an efficient/scalable solution is still desired. 
+
+{\it Problem Statement:}
+We are given the following: i) as the $\spec$, a multivariate
+polynomial $f$ with coefficients in a finite field of $2^n$ elements
+(denoted $\F_{2^n}$), for a given  $n\in \Z_{\geq 1}$; ii) a primitive
+polynomial $P_n(X)$ of degree $n$ with coefficients in $\{0,1\}$
+to construct $\Fkn$; iii) an incorrect $\impl$ circuit $C$,
+with no assumptions on the number or the type of bugs present in
+$C$; and
+% We perform formal verification of $C$ against $f$ (using \cite{lv:tcad2013})
+% to detect the presence of bugs, and determine
+% that $C$ is not single-fix rectifiable~\cite{Vkrao:FMCAD18}. 
+iv) a set of $m$ targets from $C$, provided beforehand or selected using the heuristics 
+proposed in~\cite{SS_Alan:DAC18,SS_Fujita:ISCAS19,SS_Roland:DAC19}.
+%It is already ascertained by verification that 
+%$C$ does not match the \spec, and it is further determined that $C$ is
+%also not {\it single-fix rectifiable} w.r.t. $f$. The approaches of
+%\cite{Utkarsh:VLSI18, Vkrao:FMCAD18} are therefore inapplicable; hence
+%MFR checking of $C$ is required. % so that $C$ matches $f$. 
+% {\it The objective is to decide whether the given set of $m$
+%   targets admit multi-fix rectification.} 
+%The circuit may or may not be rectifiable at these $m$ targets. This
+%MFR-check ascertains whether rectification functions exist that can
+%patch $C$ at these $m$-targets. 
+%ii) If $C$ admits MFR, then compute $m$-bit rectification
+%functions, along with corresponding don't care conditions, to
+%synthesize these functions and patch the circuit. 
+
+% {\it Approach and Contributions:} 
+%We formulate MFR using symbolic computer algebra over finite fields. 
+%Given a $\spec$ polynomial $f$ over a finite field of $2^n$ elements ($\Fkn$)
+{\it Approach:}
+The given $\impl$ $C$, with operand word-length $n$, is modeled
+as a polynomial ideal in the multivariate polynomial ring with
+coefficients in the finite field $\Fkn$, denoted $\Fkn[x_1,\dots,x_d]$. 
+The $m$ targets are
+collected as an $m$-bit-vector word $W$, which evaluates in $\Fkm$.
+For the 
+rectification check, the %hitherto 
+unknown rectification function ($U$) is  modeled as a (word-level)
+polynomial function in primary inputs (i.e. $W = U(X_{PI})$), which maps 
+$n$-bit primary inputs $X_{PI}$ to an $m$-bit word $W :\F_2^{|X_{PI}|} \rightarrow \Fkm$.
+The rectifiability check 
+%and the computation of $W = U(X_{PI})$
+is then formulated with algebraic geometry over finite fields 
+%\cite{ideals:book}
+%\cite{gao:gf-gb-ms},
+and solved using \Grobner basis (GB) techniques~\cite{gb_book}.
+
+% We present techniques that ascertain whether these $m$ targets
+% collectively admit multi-fix rectification. 
+% and if not, update our set of $m$ targets. 
+%If so, we compute $m$-Boolean functions at the targets which admit
+%rectification.
+% Otherwise, the set of $m$ targets is updated and the process is
+% repeated. 
+
+{\it Contributions:}
+% Our algebraic approach provides new insight into MFR checking
+% of finite field arithmetic circuits.
+% We propose new knowledge on application of algebraic approach
+% to enable MFR checking of finite field arithmetic circuits. The approach
+%  attains efficiency by operating at the word-level.
+Our word-level algebraic approach enables efficient MFR checking 
+of finite field arithmetic circuits.
+% Our word-level algebraic approach
+% enables MFR checking of buggy finite field arithmetic circuits.
+% by efficiently operating at the word-level.
+This word-level formulation poses new mathematical challenges: 
+the field $\Fkm$ might not be compatible with the field
+$\Fkn$, which prevents us from performing algebraic operations in a unified domain.
+We overcome this problem by computing the smallest single field $\Fkk$
+containing both $\Fkm, \Fkn$. This requires computing 
+a specific primitive polynomial $P_k(X)$ for $\Fkk$. 
+% which allows us to perform algebraic operations in a unified framework. 
+We present an approach to compute
+$P_k(X)$ using polynomial factorization and composite
+fields. We utilize the unified framework and derive an efficient
+GB-based word-level decision procedure for $m$-target MFR checking.  
+Experiments conducted on various finite field
+benchmarks with different operand and patch word-lengths, $n$ and $m$,
+respectively, corroborate the efficacy of our approach.
+
+% {\it Contribution 1:} Our algebraic approach
+% enables MFR of finite field arithmetic circuits, and it
+% efficiently operates at the word-level. The $m$ targets are
+% collected as an $m$-bit-vector word $W$, which is then construed as a
+% variable that takes values  in the finite field $\Fkm$. For the 
+% rectification check, the %hitherto 
+% unknown rectification function ($U$) is  modeled as a (word-level)
+% polynomial function in primary inputs (i.e. $W = U(X_{PI})$), as a
+% mapping $f_W:\F_2^{|X_{PI}|} \rightarrow \Fkm$, from $n$-bit primary
+% inputs $X_{PI}$ to a $m$-bit word ($W$).
+
+% {\it Contribution 2:} The rectifiability check 
+% %and the computation of $W = U(X_{PI})$
+% is formulated in algebraic geometry over finite fields 
+% %\cite{ideals:book}
+% %\cite{gao:gf-gb-ms},
+% and solved using \Grobner basis (GB) techniques~\cite{gb_book}. 
+% %% In this regard, our approach is conceptually inspired by the recent
+% %% work of~\cite{Vkrao:FMCAD18}.
+% The word-level formulation poses new mathematical challenges: 
+% The field $\Fkm$ might not be compatible with (contained in) field
+% $\Fkn$. We solve this problem over the smallest single field $\Fkk$
+% containing both $\Fkm, \Fkn$. This requires the computation of 
+% a specific primitive polynomial $P_k(X)$ for $\Fkk$ which allows
+% to operate in a unified framework. We present an approach to compute
+% $P_k(X)$ using polynomial factorization and composite
+% fields~\cite{cfmulti:1996}. Using $P_k(X)$, we propose an efficient
+% GB-based word-level decision procedure for $m$-target MFR check.  
+
+%% The paper also presents 
+%% pragmatic techniques to simplify the unified framework setup
+%% to overcome the complexity of polynomial factorization. 
+%{\it Contribution 3:}
+%In addition, we present techniques to compute
+%observability don't care (ODC) conditions corresponding to the $m$
+%rectification functions. We show how in our algebraic model the ODC's
+%correspond to {\it varieties of polynomial ideals}, and how they can
+%be computed with \Grobner bases. 
+
+%% a polynomial 
+%% which can enumerate all the ODC points 
+%% for the rectified targets. Overall, the heuristics 
+%% to select initial candidate targets, modeling of bit-level targets 
+%% as a word-level patch, the setting-up of a unified framework 
+%% for MFR, and the concept of ODCs in MFR setup are the new contributions 
+%% that haven't been presented in prior literature. 
+
+%% Taking inspiration from~\cite{Utkarsh:TCAD19}, we utilize 
+%% PolyBori’s~\cite{pbori:JSC09} reduction procedure with 
+%% ZDDs~\cite{Minato:DAC93,Minato:DAC94} as the underlying data structure 
+%% to improve our proposed approach.
+
+% Our approach is implemented using the polynomial algebra computational
+% engines of {\sc Singular} \cite{DGPS_410} and {\sc PolyBori}
+% \cite{pbori:JSC09}. 
+
+
+
+%% However, the feasibility of 
+%% synthesizing any computed patch function is constrained by the cost 
+%% defined as part of the design metrics. The quality of a patch function 
+%% is heavily dependent on the effective selection of the rectification targets, 
+%% reuse of the existing logic, and the amount of resultant design modifications.
+%% % Since we select targets heuristically and our patch function is computed in terms 
+%% % of primary inputs rather than the intermediate signals, we make no claims on the
+%% % quality of the patch function computed. 
+%% Exploiting symbolic algebra techniques
+%% on generating low-cost patch functions with effective signal selection heuristics 
+%% needs further investigation and tuning, which is beyond the scope of this paper.
+
+% {\it Paper Organization:} The following section covers preliminary
+% background. Section~\ref{sec:verify} reviews verification formulation,
+% the result of which is analyzed to prune rectification
+% targets. Section~\ref{sec:comps} describes heuristics to pick targets 
+% and how the unified framework is setup. Word-level rectification check 
+% is described in Section~\ref{sec:rcheck}, followed by a brief description 
+% in Section~\ref{sec:rfunc} on rectification function computation 
+% (Analogous to that of Section VI in~\cite{Vkrao:FMCAD18}). Results are 
+% presented in Section \ref{sec:exp} and Section~\ref{sec:conc} concludes the paper.
+
+{\it Paper Organization:} The following section covers preliminary
+background. Section~\ref{sec:pmodel} reviews the polynomial modeling concepts.
+% an augmentation of which is later utilized in MFR checking.
+Section~\ref{sec:comps} describes the setup of a unified computational
+framework for MFR checking. Word-level rectification check is described in
+Section~\ref{sec:rcheck}.
+%, followed by  rectification function computation and ODC concept in
+%Section~\ref{sec:rfunc}.
+Experimental results are described in Section \ref{sec:exp}, and
+Section~\ref{sec:conc} concludes the paper. 

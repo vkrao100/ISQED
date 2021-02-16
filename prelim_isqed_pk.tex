@@ -1,0 +1,380 @@
+\section{Preliminaries: Notation and Background}\label{sec:prelim}
+This section reviews some basic concepts from symbolic computer
+algebra and associated algorithms that are utilized in this paper. 
+
+{\it Finite Field and Primitive Polynomial:}
+%Let $\B$ denote the Boolean domain, and $\neg, \wedge,\vee, \oplus$
+%denote the  NOT, AND, OR and XOR operators, respectively.
+Let $\F_2=\{0,1\}$ be the field of 2 elements, and let $\F_q =
+\F_{2^n}$ denote the finite 
+field of $q=2^n$ elements, for a given $n$. $\Fn$ is the
+$n$-dimensional extension of $\F_2$, and it is constructed as $\Fn =
+\F_2[X]\pmod{ P_n(X)}$. Here $P_n(X) \in \F_2[X]$ is a {\it primitive
+  polynomial}, i.e. a degree-$n$ polynomial, irreducible in
+$\F_2$, with a root $\gamma$ ($P_n(\gamma)=0$). 
+Consequently, $\gamma$ is called a primitive element (PE) of $\Fn$ and
+it generates the cyclic group: $\Fn^*=\{1=\gamma^{2^n - 1}, \gamma,
+\gamma^2,\dots,\gamma^{2^n - 2}\}$. Note: $\forall \gamma\in \Fkn,
+\gamma^{2^n-1}=1$, thus $\gamma^{2^n}=\gamma$.
+
+{\it Minimal Polynomial of $\gamma$:} If $\gamma \in \Fn$ is a root
+of $P_n(X)$, then $\gamma^{2^l},l\geq 0$, is also a root of
+$P_n(X)$. Elements $\gamma^{2^l}$ are conjugates of each other. Let
+$e>0$ be the smallest integer such that $\gamma^{2^e} = \gamma$. Then
+$P_n(X)=\prod_{i=0}^{i=e-1}(X+\gamma^{2^i})$ is called the {\it
+  minimal polynomial} of $\gamma$. If $\gamma$ is also a PE of $\Fn$,
+then the minimal polynomial of $\gamma$ is also a primitive
+polynomial, and has degree $=n$. Hence, $\Fn$ is also called the
+$\gamma$-extension of $\F_2$, also denoted as $\F_2(\gamma)$. 
+An element $A \in \Fn$ can be written as $A = a_0 + a_1\cdot \gamma +
+\dots + a_{n-1}\cdot\gamma^{n-1}$, where $a_0,\dots,a_{n-1} \in
+\F_2$. 
+In $\Fq$, the addition ($''+''$) and multiplication
+($''\cdot''$) operations are performed in the base field $\F_2$ and
+reduced modulo the corresponding primitive polynomial $P_n(X)$. 
+For $n, k \in \Z_{> 0}$, if $n$ divides $k$ ($n ~|~ k$), then $\Fn \subset
+\Fkk$. 
+Thus, $\F_2 \subset \Fkk, \forall k>1$. 
+The fields $\Fkn$ have
+characteristic 2, and therefore $-1 = +1$ in $\Fkn$. 
+
+
+\begin{Example}
+{\it
+Consider the fields $\F_{2^4}$ and $\F_{2^2}$. Let $\F_{2^4}$ be
+constructed as $\F_2[X] \pmod{ P_4(X)=X^4+X^3+1}$, with $P_4(\gamma)=0$. 
+Let $\F_{2^2} = \F_2[X]\pmod{
+  P_2(X)=X^2+X+1}$, with $P_2(\alpha)=0$. Since $2 ~|~ 4$, $\F_{2^2}
+\subset \F_{2^4}$. We demonstrate this field containment in terms of
+their PEs. 
+
+Compute $\gamma^{2^l}$ for $l>0$: for
+$l=1,\gamma^{2^l}=\gamma^2$; $l=2, \gamma^{2^l}=\gamma^4$; $l=3,
+\gamma^{2^l}=\gamma^8$; $l=4, \gamma^{2^l}=\gamma^{16}=\gamma$. Since
+$\gamma^{16}=\gamma$ (the elements repeat), we have that $\{\gamma,
+\gamma^2, \gamma^4, \gamma^8\}$ are conjugates. Thus the minimal
+polynomial of $\gamma$ can be reconstructed as
+$(X+\gamma)(X+\gamma^2)(X+\gamma^4)(X+\gamma^8)$, which simplifies to
+$X^4+X^3+1 = P_4(X)$
+itself. Similarly, $\{\alpha,\alpha^2\}\in \F_{2^2}$ are conjugates, and
+$(X+\alpha)(X+\alpha^2)=P_2(X)$.
+
+Now consider the element $\gamma^5 \in \F_{2^4}$. Then $\gamma^{10}$
+is its only conjugate, and $(X+\gamma^5)(X+\gamma^{10}) =
+X^2+X+1=P_l(X)$. In other words, $\{0, 1, \alpha = \gamma^5, \alpha^2 =
+\gamma^{10}\}$ are the 4 elements of $\F_{2^2}$, also contained in
+$\F_{2^4}$; implying that $\F_{2^2} \subset \F_{2^4}$.
+}
+\end{Example}
+
+% To model functions over $n$-bit vector operands, we
+% use $q = 2^n$, i.e. the finite field $\Fkn$ of $2^n$ elements. 
+Let $R=\F_q[x_1,\dots,x_d]$ be the  polynomial ring in variables
+$x_1,\dots,x_d$ with coefficients in $\F_q$. A polynomial $f \in R$ is 
+written as a finite sum of terms  $f = c_1 M_1 +  \dots +
+c_p M_p$, where $c_i$'s are the coefficients and $M_i$'s
+the monomials, and $c_i M_i$'s terms of $f$.
+%, i.e. power products of the type $x_1^{e_{1}}\cdot x_2^{e_{2}}\cdots
+%x_d^{e_{d}}$,  $e_j \in \Z_{\geq  0}$. To systematically manipulate
+%the polynomials,
+To systematically manipulate the polynomials, a term order $>$
+is imposed on all polynomials of $R$, such that subject to $>$,
+$c_1M_1 > c_2 M_2 > \dots > c_p M_p$. Then $lt(f) = c_1 M_1$ denotes
+the leading term of $f$. 
+% This work employs {\it lexicographic} (lex) term orders. 
+
+%%%%%%%%%%%%%%%%%%%% PK
+%% A circuit with $n$-bit operands is modeled as a polynomial function in
+%% $\Fn$, where variables $x_1,\dots,x_d$ denote the nets of the circuit.
+%% %%%% Move to verification
+%% Logic gates of the circuit can be modeled with polynomials in
+%% $\F_2 \subset \Fn$, with the mapping $\B \mapsto \F_2$:
+%% %% As $\Fkk \supset \F_2$, these polynomials can also be
+%% %% construed as polynomials in $\Fkk$.
+%% %% given as: 
+%% \begin{equation}
+%% \label{bool2poly}
+%% \begin{split}
+%% z ~ =  ~ \neg a ~ \rightarrow ~ z+a+1 & \pmod 2  \\
+%% z ~ =  ~ a \wedge b ~ \rightarrow ~ z+a \cdot b & \pmod 2\\
+%% z ~ =  ~ a \vee b ~ \rightarrow ~ z+a+b+a \cdot b & \pmod 2 \\
+%% z ~ =  ~ a \oplus b ~ \rightarrow ~ z+a+b & \pmod 2 
+%% \end{split}
+%% \end{equation}
+
+{\it Polynomial Reduction:} Let $F=\{f_1,\dots,f_s\}$ be
+a set of polynomials in $R$ and $f\in R$ be 
+another polynomial. Then $f\xrightarrow{F}_+r$ denotes the {\it
+  reduction} of $f$ modulo $F$ resulting in remainder $r$, which is
+obtained by iteratively canceling terms in $f$ by $lt(f_j), f_j\in F$,
+via polynomial division (cf. Alg. 1.5.1~\cite{gb_book}). The
+remainder $r$ is said to be {\it reduced} such that no term in $r$ is
+divisible by the leading term of any $f_j \in F$.
+
+%Algorithm~\ref{algo:mv_reduce}
+% term of any polynomial $f_j$ in $F$.
+% Along with the remainder $r$, the algorithm also returns
+% the set of quotients $\{u_1,\dots,u_s\}$ of division of $f$ by
+% $\{f_1,\dots,f_s\}$, respectively, such that $f = u_1\cdot
+% f_1+\dots+u_s\cdot f_s + r$.}
+
+% {\small
+% \begin{algorithm}[hbt]
+%  \caption{Multivariate Reduction of $f$ by $F=\{f_1,\dots,f_s\}$}
+%  \label{algo:mv_reduce}
+%  \begin{algorithmic}[1]
+%  % \Procedure{$multi\_variate\_division$}{$f, f_1, \dots, f_s \in \F[x_1, \dots, x_d], f_i\neq 0$}
+%  \Procedure{$multi\_var\_division$}{$f,\{f_1,\dots,f_s\},f_j\neq0$}
+%  % \ENSURE $u_1,\dots, u_s, r$ s.t. $f = \sum f_i u_i+r$ where $r$ is
+%  % reduced w.r.t. $F = \{f_1,\dots, f_s\}$ and max($lp(u_1)lp(f_1), \dots, lp(u_s)lp(f_s), lp(r)$) = $lp(f)$
+%  \State $u_j \gets 0; ~r \gets 0, ~h \gets f $ 
+%  \While {  $h \neq 0$ }
+%  \If{ $\exists j$ s.t. $lm(f_j) ~|~ lm(h)$}
+%  \State choose $j$ least s.t. $lm(f_j) ~|~ lm(h)$
+%  \State $u_j = u_j + \frac{lt(h)}{lt(f_j)}$
+%  \State $h = h - \frac{lt(h)}{lt(f_j)} f_j$
+%  \Else
+%  \State $r = r+ lt(h)$
+%  \State $h = h - lt(h)$
+%  \EndIf
+%  \EndWhile
+%  \State \Return $(\{u_1,\dots,u_s\} , r)$
+%  \EndProcedure
+%  \end{algorithmic}
+%  \end{algorithm}
+% }
+
+%% The algorithm initializes $h$ with the polynomial $f$ and cancels its
+%% leading term by some  polynomial $f_j$. If the leading term $lt(h)$
+%% cannot be canceled by any $lt(f_j)$, then it is added to the  final
+%% remainder $r$ and the process is repeated until all the terms in $h$
+%% are analyzed.  
+%% We represent the given circuit by way of a set of polynomials
+%% $F=\{f_1,\dots,f_s\}$, and for verification and rectification, we
+%% analyze the solutions to the polynomial equations $f_1=\dots=f_s=0$. 
+%% For this purpose, we
+%% consider the {\it ideal} generated by the polynomials, and their {\it
+%%   variety.} 
+
+%\begin{Definition}$\bf{\left[Ideal\right]}$
+{\it Ideals:} A set of polynomials 
+$F=\{f_1,\dots,f_s\}$ from $R$, generates the {\bf ideal} $J = \langle
+F \rangle \subseteq R$, defined as $J = \langle f_1,\dots,$ $ f_s \rangle = \{
+h_1\cdot f_1 + \dots+h_s\cdot f_s:  h_1,\dots,h_s\in R\}$. 
+%% \vspace{-0.1in}
+%% \begin{small}
+%% \begin{equation}
+%% J = \langle f_1, \dots, f_s \rangle = \{ h_1\cdot f_1 + \dots+h_s\cdot
+%% f_s:  h_1,\dots,h_s\in R\}
+%% \end{equation}
+%% \end{small}
+%% \vspace{-0.1in}
+Polynomials $f_1,\dots,f_s$ form the basis or generators of ideal $J$.
+%\end{Definition}
+
+{\it Varieties:} Let $\bm{a} = (a_1,\dots,a_d) \in \Fq^d$ be a point in the affine
+space, and $f$ a polynomial in $R$. If $f(\bm{a}) = 0$, we say
+that $f$ {\it vanishes} on $\bm{a}$. We have to
+analyze the {\it set of all common zeros} of the polynomials of $F =
+\{f_1,\dots,f_s\}$  that lie within the field $\Fq$ -- i.e. the set of
+all points $\bm{a} \in \Fq^d$ such that
+$f_1(\bm{a})=\dots=f_s(\bm{a})=0$. This zero set is called the {\bf
+  variety}, which depends not just on the given set of polynomials in
+$F$, but rather on the ideal generated by them. We denote the variety as
+$V(J)$, where: $ V(J)= V_{\Fq}(J) = V_{\Fq}(f_1,\dots,f_s) = \{\bm{a}
+\in \Fq^d: \forall f \in J, f(\bm{a}) = 0\}.$
+
+
+Given two ideals $J_1 = \langle f_1,\dots,f_s\rangle, J_2=\langle
+h_1,\dots,h_r\rangle$, we denote their {\bf sum} $J_1 + J_2 = \langle
+f_1,\dots,f_s,h_1\dots,h_r\rangle$, and their {\bf product} $J_1\cdot J_2 =
+\langle f_i\cdot h_j: 1\leq i\leq s, 1\leq j\leq r\rangle$.
+%, and the {\bf ideal quotient (colon ideal)} of $J_1$ by $J_2$,
+%$J_1:J_2 = \{f \in R \ |\ f\cdot g \in J_1, \forall g \in
+%J_2\}$.
+Ideals and varieties are dual concepts: $V(J_1 + J_2) = V(J_1) \cap
+V(J_2)$, and $V(J_1\cdot J_2) = V(J_1) \cup V(J_2)$.
+%, and $V(J_1:J_2)=V(J_1)-V(J_2)$. 
+%Moreover, if $J_1 \subseteq J_2$ then $V(J_1)\supseteq V(J_2)$.
+
+% \begin{Definition}
+% \label{def:quo}
+% ({\it Quotient of Ideals}) If $J_1$ and $J_2$ are ideals in a ring $R$,
+% then $J_1:J_2$ is the set 
+% %  \begin{equation}
+%   $\{f \in R \ |\ f\cdot g \in J_1, \forall g \in J_2\}$ %\nonumber
+% %  \end{equation}
+% and is called the {\bf ideal quotient} of $J_1$ by $J_2$, also called
+% the {\bf colon ideal}.
+% \end{Definition}
+% Given the generators of $J_1$ and $J_2$, the generators of $J_1:J_2$ can
+% also be computed using \Grobner bases with elimination (lex) term
+% orders. We refer the reader to Section 2.3 in \cite{ideals:book} for
+% further details.
+% Varieties can be different when restricted to the given field $\Fq$
+% or considered over its algebraic closure $\Fqbar$. We will generally
+% drop the subscript when considering varieties over $\Fq$ and
+% denote $V(J)$ to imply $V_{\Fq}(J)$. The subscripts will be used,
+% however, to avoid any ambiguities, e.g. when comparing $V_{\Fq}(J)$
+% against the one over the closure $V_{\Fqbar}(J)$. 
+
+
+{\it \Grobner Bases:} An ideal $J$ may have many different sets of 
+generators/bases. %such that their varieties are the same.
+A \Grobner basis (GB) is one such generating set $G=\{g_1, \dots,
+g_t\}$ with special properties.
+%  that help to solve
+% many polynomial decision and quantification problems. 
+ % that is a canonical representation of the ideal. 
+
+\begin{Definition}
+\label{def:gb}
+{[\Grobner Basis]}~\cite{gb_book}: 
+For a monomial ordering $>$, a set of non-zero polynomials $G =
+\{g_1,\cdots,g_t\}$ contained in an ideal $J$, is called a
+GB of $J$ $\iff$
+$\forall f \in J$, $f\xrightarrow{g_1,..,g_t}_+0$. 
+%$i \in \{1,\cdots, t\}$ 
+\end{Definition}
+The GB $G$ for an ideal $J$ can be computed using the Buchberger's
+algorithm  %\cite{buchberger_thesis}. 
+(cf. Alg. 1.7.1 in~\cite{gb_book}), which
+takes as input a set of polynomials $F = \{f_1,\dots, f_s\}$ and
+computes its GB $G = \{g_1,\dots,g_t\}$, such that $J = \langle
+F\rangle = \langle G\rangle$. Moreover, the polynomials of $F$ and $G$
+have the same solution-set, i.e. $V(J) = V(F) = V(G)$. 
+
+
+%% Buchberger's algorithm can be easily extended to relate a GB of an ideal 
+%% with any generating set contained in the ideal. 
+%% While computing a GB, we can output 
+%% not just the GB $G=\{g_1,\dots,g_t\}$ but also a $t\times
+%% s$ matrix $M$ with polynomial entries such that:
+
+%% \vspace{-0.1in}
+%% \begin{small}
+%% \begin{equation}\label{eqn:matrix}
+%% \begin{bmatrix} g_1 \\ g_2 \\ \vdots \\ g_t \end{bmatrix}  =  M \cdot
+%% \begin{bmatrix} f_1 \\ f_2 \\ \vdots \\ f_s \end{bmatrix}
+%% \end{equation}
+%% \end{small}
+%% \vspace{-0.1in}
+
+%%:$M$ is a $t\times s$ polynomial matrix.\\
+
+{\it Ideal Membership Test:} The above definition inherently provides
+a decision procedure to test for membership of a polynomial in an ideal:
+$f$ is a member of an ideal $J$ {\it if and only if} 
+% dividing $f$ by the \Grobner basis $G = GB(J)$ gives the remainder 0. 
+$f\xrightarrow{GB(J)}_+0$.
+When $f\notin J$,
+then division by $GB(J)$ results in a non-zero remainder $r$ that is
+unique/canonical. 
+% \begin{Proposition}[cf. Thm. 1.9.1. (iv) in \cite{gb_book}]
+% \label{prop:unique_rem}
+% For a \Grobner basis $G$ and a polynomial $f$ in $R$, if
+% $f\xrightarrow{G}_+ r_1, f\xrightarrow{G}_+ r_2$, then $r_1 = r_2$. 
+% \end{Proposition}
+
+
+%Therefore, given any ideal $J$, $V_{\Fq}(J) = V_{\Fqbar}(J)
+%\cap\Fq^d = V_{\Fqbar}(J) \cap V_{\Fqbar}(J_0) = V_{\Fqbar}(J+J_0) =
+%V_{\Fq}(J+J_0)$ (\cite{gao:gf-gb-ms}).
+
+For any element $\varphi\in\Fq$,
+$\varphi^q=\varphi$ holds. Therefore, the polynomial $x^q-x$ vanishes
+everywhere in $\Fq$, and we call it a {\it vanishing polynomial}. We
+denote by $F_0 = \{x_1^q-x_1,\dots,x_d^q-x_d\}$ the set of all vanishing
+polynomials in $R$, and  $J_0 = \langle F_0 \rangle$
+as the ideal of vanishing polynomials. Further,
+$V_{\Fq}(J_0) = \Fq^d$, and for any ideal $J$,
+$V_{\Fq}(J)=V_{\Fq}(J+J_0)$. 
+% In this work, we represent the $\impl$ $C$ using the ideal $J+J_0$,
+% and check for MFR by reasoning about the variety
+% $V_{\Fq}(J+J_0)$. 
+
+%% \begin{Definition}
+%% Given an ideal $J\subset R$ and $V(J) \subseteq \Fq^d$, the {\it ideal
+%% of polynomials that vanish on} $V(J)$ is $I(V(J)) = \{ f \in R :
+%% \forall \bm{a} \in V(J), f(\bm{a}) = 0\}$.
+%% \end{Definition}
+%% %\vspace{-0.08in}
+
+%% If $f$ vanishes on $V_{\Fq}(J)$, then $f \in I(V_{\Fq}(J))$. The Strong
+%% Nullstellensatz over finite fields characterizes this ideal:
+
+%% \begin{Theorem}
+%% \label{thm:sns}
+%%   [The Strong Nullstellensatz over Finite Fields (cf. Thm 2.2 in
+%%     \cite{gao:qe-gf-gb})]   
+%% Let $J \subset R = \Fq[x_1,\dots,x_d]$ be any ideal, and $J_0=\langle
+%% x_1^q-x_1,\dots,x_d^q-x_d\rangle$ be the ideal of vanishing 
+%% polynomials in $R$. Then, $I(V_{\Fq}(J)) = J + J_0$.
+%% \end{Theorem}
+
+%% \begin{Definition}[Elimination Ideal]
+%% Given an ideal $J = \langle f_1, \dots, f_s\rangle \subset
+%% \Fq[x_1,\dots,x_d]$, the $l$-th elimination ideal $J_l$ is defined as
+%% $J_l = J \cap \Fq[x_{l+1},\dots,x_d]$. 
+%% \end{Definition}
+%% The ideal $J_l$ is called an elimination ideal because it eliminates
+%% variables $x_1,\dots,x_{l}$. Generators of the $l$-th
+%% elimination ideal can be computed using \Grobner bases using {\it lex}
+%% term orders.
+%% \begin{Theorem}[Elimination Theorem]
+%% \label{def:elim}
+%% Let $J \subset R$ be an ideal and $G$ be its \Grobner basis w.r.t. the
+%% lexicographical (lex) order on the variables where $x_1 > x_2 > \cdots
+%% > x_d$. Then for every $0 \leq l \leq d$ the set $G_l = G \cap
+%% \Fq[x_{l+1},\dots,x_d]$ is a \Grobner basis of the $l^{th}$
+%% elimination ideal $J_l$. 
+%% \end{Theorem}
+% The rectifiability concepts presented in the sequel rely on the above
+% results of the Strong Nullstellensatz over finite fields and \Grobner
+% basis reduction $f\xrightarrow{GB(J+J_0)}_+ r$.
+%using elimination ideals.  
+%Our verification and rectification tests follow from the Strong Nullstellensatz
+%%%%% RTTO
+%% \begin{Definition}
+%% \label{def:rtto}
+%% \par {\it Reverse Topological Term Order~\cite{lv:tcad2013}:}
+%% The computational complexity of Buchberger's algorithm is exponential
+%% in the number of variables $n$. As our work is focused on the circuits,
+%% we will describe a term order that renders the set of polynomials for 
+%% the gates of the circuit, a \Grobner basis itself. This term order 
+%% is called Reverse Topological Term Order (RTTO).
+%% \par Let $C$ be an arbitrary combinational
+%% circuit. Let $\{x_1, \dots$ $, x_d\}$ denote the set of all variables
+%% (signals) in $C$. Starting from the primary outputs, perform
+%% a {\it reverse topological traversal} of the circuit and order the
+%% variables such that $x_k > x_j$ if $x_k$ appears earlier in the
+%% reverse topological order. Impose a lex term order $>$ to represent each
+%% gate as a polynomial $f_j$, s.t. $f_j = x_k + tail(f_j)$. Then 
+%% set of polynomials $\{f_1,\dots,f_s\}$ corresponding to the gates of the circuits 
+%% is a \Grobner basis when RTTO is used for ordering.
+%% \end{Definition}
+%% % \par {\bf Weak Nullstellensatz and Elimination Theory:} 
+%% \begin{Theorem}[{\it The Weak Nullstellensatz over finite fields (from
+%% Theorem 3.3 in~\cite{gao:gf-gb-ms})}]
+%% \label{thm:weak-ns-ff}
+%% {\it For a finite field $\Fq$ and the ring $R = \Fq[x_1, \dots, x_d]$, let
+%% $J = \langle f_1, \dots, f_s\rangle \subseteq R$, and let $J_0 = \langle
+%% x_1^q-x_1, \dots, x_d^q -  x_d\rangle$ be the ideal of vanishing
+%% polynomials. Then $V_{\Fq}(J) = \emptyset \iff 1 \in J + J_0 \iff G =
+%% GB(J+J_0) = \{1\}$. }
+%% \par To find whether a set of polynomials $f_1,\dots,f_s$ have no common
+%% zeros in $\Fq$, we can compute the GB $G$ of
+%% $\{f_1,\dots,f_s,x_1^q-x_1,\dots,x_d^q-x_d\}$ and see if $G = \{1\}$. 
+%% \end{Theorem}
+%% We also need to employ notion of difference of varieties in our theoretical
+%% section. The equivalent ideal operation is called the quotient of ideals.
+%% In terms of varieties, $V_{\Fq}(J_1:J_2) = V_{\Fq}(J_1) \setminus V_{\Fq}(J_2)$.
+%% \par The computer algebra tools like SINGULAR~\cite{DGPS_410} contain implementations for 
+%% computing elimination ideals and quotient of ideals.
+%% \subsection{Circuit Polynomials}
+%% \label{composite_field}
+%% For a given data-path size $n$, $q=2^n$ is
+%% chosen to
+% takes W which takes values in $\Fkm$.
+% change f to fspec.
+% f1 to fs are gates of the circuit. 

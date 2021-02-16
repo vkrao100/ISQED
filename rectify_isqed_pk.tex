@@ -1,0 +1,439 @@
+\section{Word-Level Rectification Check}\label{sec:rcheck}
+
+
+%% Once the field $\Fkk$, its primitive polynomial $P_k(X)$ and the PE
+%% $\alpha$ is identified, we begin the task of formulating the
+%% MFR check over $\Fkk$.
+% We now show how rectifiability of $C$ against its $\spec$ at
+% $m$-distinct target nets $\{w_0,\dots,w_{m-1}\}$ can be ascertained
+% (algebraically) at the word-level. 
+The $m$-bit target word $W$ is interpreted as an element in $\Fkm$,
+such that $W = w_0 + \beta \cdot w_1 + \dots + \beta^{m-1} \cdot
+w_{m-1}$,   
+% \vspace{-0.2in}
+% \begin{align}\label{bit-to-word}
+% W = w_0 + w_1\beta + \dots + w_{m-1}\beta^{m-1}
+% \end{align}
+% \vspace{-0.2in}
+where $\beta$ is a PE of $\Fkm$. As $w_0,\dots,w_{m-1}$ are bit-level variables, we first
+represent each $w_i$ as a polynomial in terms of the word $W$, and
+then substitute their word-level expressions in generators of the
+ideal $J+J_0$. 
+
+\begin{Lemma}[From \cite{galois_field:mceliece}]
+  \label{lemma:exponent}
+Let $\theta_1,\dots,\theta_t \in \Fkm$. Then $(\theta_1+\theta_2+\dots+\theta_t)^{2^i} =
+\theta_1^{2^i}+\theta_2^{2^i}+\dots+\theta_t^{2^i}$, for $i\geq 1$.
+\end{Lemma}
+By virtue of Lemma~\ref{lemma:exponent} and using the relation $W = \sum_{i=0}^{m-1}\beta^i \cdot w_i$, 
+we compute $W^{2^j}, 0\leq j < m$: 
+\begin{eqnarray}\label{eqn:exponent}
+  \begin{aligned}
+    W & = w_0 + \dots + \beta^{m-1} \cdot w_{m-1}\\
+    W^2 & = w_0^2 + \dots + \beta^{2(m-1)}\cdot w_{m-1}^2\\
+    W^2 & = w_0 + \dots + \beta^{2(m-1)} \cdot w_{m-1}
+    ~(w_i^2=w_i)\\
+    & \dots \\
+    W^{2^{m-1}} & = w_0 + \dots + \beta^{2^{m-1}(m-1)}\cdot w_{m-1}
+  \end{aligned}
+\end{eqnarray}
+
+Considering $w_0,\dots,w_{m-1}$ as $m$ unknowns, and $W$ and $\beta$
+as constants, we solve (using Gaussian elimination) the
+$m$ linear equations of Eqn. (\ref{eqn:exponent}) to obtain each $w_i$
+% $m$ linear equations of~\eqref{eqn:exponent} to obtain each $w_i$
+as a polynomial function in $W, \beta$: $w_i =
+\mathcal{F}_i(W,\beta)$. Each occurrence of $w_i$ in the generators of
+$J+J_0$ can then be replaced with $\mathcal{F}_i(W,\beta)$. 
+
+%\subsection{Rectification Setup}\label{sec:rsetup}
+{\it Rectification setup:} Using the aforementioned concepts, the
+rectification check is setup in $\Fkk$ as follows: 
+
+\begin{enumerate}
+\item Setup the polynomial ring as: $R'=\Fkk[x_1,..,x_d,Z,A$ $,W]$,
+  by including the variable $W$, and constructing $\Fkk$ using $P_k(X)$
+  (From Thm. \ref{thm:Pk}), with $P_k(\alpha)=0$. 
+\item 
+  {\it Term order:} Derive a {\it variable order} on the nets of $C$
+  such that each variable corresponding to the output of a gate
+  appears earlier (lower index) than its immediate inputs. Moreover,
+  include the word-level patch variable $W$ in the variable order such
+  that $W$ is placed before the target net $w_i$ which has the lowest
+  index. Using such a variable order, impose a {\it lex} order on
+  the monomials. We call the resulting term order the {\it Word-level
+    Rectification Term Order (WRTO)} $>_R$.  
+\item Correspondingly update the set of polynomials $F$ (describing the
+  logic gates of $C$) to $F'$ as follows: i) Begin by setting
+  $F'=F$. Remove from $F'$ the polynomials with $w_i$'s as leading
+  terms.
+  %ii) Remove the polynomials in the transitive fan-in of
+  %target $w_i$'s which do not have re-converging fan-outs.
+  ii) Substitute for $w_i$'s the word-level polynomials
+  $\mathcal{F}_i(W,\beta)$ as  derived from
+  Eqn. (\ref{eqn:exponent}). iii) Add the polynomial $f_W: W +
+  \sum_{i=0}^{m-1}\beta^{i} \cdot w_i$ to $F'$. iv) Substitute 
+  $\beta = \alpha^{\mu}, \gamma=\alpha^{\lambda}$ for the constants
+  (Eqn. (\ref{word-level-rep})). Denote ideal $J'=\langle F'\rangle
+  \subset R'$.
+\item Update the set of vanishing polynomials $F_0$ to $F'_0$ to
+  include the vanishing polynomial $W^{2^m}-W$. This restricts $W$ to
+  take values from $\Fkm\subseteq\Fkk$. Let $J'_0=\langle F'_0\rangle$.
+\end{enumerate}
+
+The rectification check is then formulated by operating on the
+ideal $J'+J'_0=\langle F' \cup F'_0\rangle \subseteq R'$.
+%It can be shown that the set $F'\cup F'_0$ also constitutes a
+%\Grobner basis of $J'+J'_0$ under WRTO $>_R$, as the polynomials of
+%$F'\cup F'_0$ satisfy the same conditions of Thm. 6.1 of
+%\cite{lv:tcad2013}.
+% The polynomial $f_W$ with leading term $W$ is relatively prime with
+% respect to the polynomials representing the other gates.
+
+\begin{Example}
+  \label{ex:rect_setup}
+% We illustrate how the premise of verification (Example \ref{verify_ex}
+% and Fig.~\ref{fig:mas_bug_W}(a)) is modified to 
+% setup word-level MFR, depicted in Fig. \ref{fig:mas_bug_W}(b).
+{\it 
+Continuing with the running example of Fig. \ref{fig:mas_bug_W}(b), 
+let the target nets be $W = \{r_3,rr_3\}$, represented by the
+polynomial $f_W:W+r_3+\be \cdot rr_3$. We begin with the set $F'=F$,
+and derive WRTO to be {\it lex} with variable order: 
+
+% {\bf Vikas:
+%   please check if the term order follows reverse topological ordering!}.
+  %$\{Z\}>\{A>B\}>\{z_0>z_1>z_2\}>\{d_0>f_0>e_2>e_3\}>\{e_0>e_1>rr_0>d_6>d_7>d_8\}>\{d_1>d_2>d_3>r_0>d_5>rr_1\} >\{r_1>rr_2\}>\{r_2>\bm{W>r_3>rr_3}\}>\{d_4>r_4>rr_4\}>\{a_0>a_1>a_2>b_0>b_1>b_2\}.$
+% $\{Z\}>\{A>B\}>\{z_0>z_1>z_2\}>\{d_0>f_0>e_2>e_3\}>\{e_0>e_1>rr_0>d_6>d_7>d_8\}>\{d_1>d_2>d_3>r_0>d_5>rr_1\}>
+% \{r_1\}>{\bf \{W\}}>\{rr_3>rr_2\}>\{r_2>r_3>rr_4\}>\{r_4>d_4\}>\{a_0>a_1>a_2>b_0>b_1>b_2\}$.
+$\{Z\}>\{A>B\}>\{z_0>z_1>z_2\}>\cdots>\{d_1>d_2>d_3>r_0>d_5>rr_1\}>
+\{r_1\}>{\bf \{W\}}>\{{\bf rr_3}>rr_2\}>\{r_2>{\bf r_3}>rr_4\}>\{r_4>d_4\}>\{a_0>a_1>a_2>b_0>b_1>b_2\}$.
+
+The polynomials $f_{26}, f_{27}$ are removed from $F'$, as they
+correspond to the target net. Polynomials $f_{22}, f_{23}$ are 
+updated to $f'_{22}, f'_{23}$ to represent $rr_3, r_3$ in terms of
+$W$. We use Eqn.~(\ref{eqn:exponent}) to represent these bit-level
+targets in terms of $W: rr_3=$ $ W^2+W$, and $r_3 = \be W^2 +\be^2
+W$. These polynomials are updated as given below:
+\begin{align*}
+&f'_{22}:rr_1  + (W^2+W) + rr_2\\
+&f'_{23}:r_1 + r_2 + (\be W^2 +\be^2 W)\\
+&f_W:W + r_3 + \be \cdot rr_3\\     
+&\be=\al^{21} \text{ and } \ga=\al^9 \\
+&F'=\{f_1,\dots,f_{21},~f'_{22},f'_{23},f_W,\dots,f_{30}\}-\{f_{26},f_{27}\}
+\end{align*}
+}
+\end{Example}
+%\vspace{-0.2in}
+%\subsection{Rectification Check}
+%MFR at target $W$ implies that \underline{there exists} a
+%  polynomial function $U(X_{PI})$ which, when implemented at $W$,
+%  ensures that the $C$ would implement $f$.
+%% Note that
+%% $U(X_{PI})$ represents the unresolved polynomial function $\sum_{i=0}^{m-1}\be^iw_i$, 
+%% where each net $w_i$ represents a function of the type 
+%% %correction$\F_{2^{m}}^{|X_{PI}|}\rightarrow\F_2$.
+%% $\F_{2}^{|X_{PI}|}\rightarrow\F_2$.
+% {\it Rectification Check:} With the aforementioned MFR setup over
+% $\Fkk$ (with $\beta = \alpha^{\mu}, \gamma=\alpha^{\lambda}$), 
+We now state the {\it multi-fix rectification theorem} that checks
+for the existence of $W = U(X_{PI})$ as a MFR function.
+
+\begin{Theorem}{[Multi-fix Rectification Theorem]}\label{Thm:rect}
+
+Given the specification polynomial $f$, and the implementation
+$C$ represented using the ideal $J' = \langle F'\rangle\subset R'$,
+where $F'=\{f_1,\dots,\bm{f_W:W+\sum_{i=0}^{m-1}\beta^i \cdot w_i},
+\dots,f_s\}$, and $J'_0=\langle F'_0\rangle$ the corresponding ideal
+of vanishing polynomials in $R'$. Impose WRTO $>_R$ on $R'$.
+%(Setup as described in Sec.\ref{sec:rsetup}),
+Construct the following ideals:  
+\bi
+\item {\small $J'_l = \langle F'_l\rangle =\langle f_1,\dots,f'_W=W+\delta[l],\dots,f_s\rangle$},
+  $1 \leq l \leq 2^m$, where $F'_l$ is obtained from $F'$ by
+  replacing $f_W \in F'$ with $f'_W: W + \delta[l], 1\leq l \leq 2^m$,
+  and $(\delta[1],\dots,\delta[2^{m}]) =
+  (0,1,\be,\dots,\be^{2^m-2})$. 
+\ei
+Reduce $f$ by $F'_l\cup F'_0$ to obtain the remainders $rem_l$: 
+$f\xrightarrow{F'_l\cup F'_{0}}_+ rem_l,$  for $1 \leq l \leq 2^m$. 
+Then, there exists a polynomial function 
+%$U(X_{PI}) = \sum_{i=0}^{m-1}\be^iw_i: \F_{2}^{|X_{PI}|}\rightarrow
+%\F_{2^m}$, which, when
+$U(X_{PI}): \F_{2}^{|X_{PI}|}\rightarrow \F_{2^m}$, which, when
+ implemented at the target $W$, rectifies $C$ to match $f$ \textit{if
+   and only if} $\bigcup\limits_{l=1}^{2^m}V(rem_l) = \Ftwo^{|X_{PI}|}$.
+% = V(J_{0}^{X_{PI}})$. 
+\end{Theorem}
+
+% \begin{table*}[t]
+% \footnotesize
+% \centering
+% \caption{{\footnotesize 
+% % The notations in the columns denote the following: 
+% Time is in seconds; $\textit{n}$ = Datapath Size, $\textit{m}$ = target word size, 
+% $\textit{k}$ = composite field size (degree of $P_k(X)$), 
+% AM = Maximum resident memory utilization in Mega Bytes (Average across benchmarks),
+% \#G = Number of gates $\times 10^3$, \#BO = Number of incorrect outputs, 
+% PBS = Required time for PolyBori setup (ring declaration/poly collection/spec collection),
+% % VF = time for verification (Sec.~\ref{sec:verify}), MS = Multi-fix check setup time (Sec.~\ref{sec:comps} [Rectification Setup]), RC = time for MFR check (Thm.~\ref{Thm:rect}), TE = Total execution time.}}
+% VMS = Required time for verification, polynomial factorization and computing $P_k(X)$, and MFR setup, 
+% RC = Required time for MFR check, TE = Required time for total execution }}
+% \label{exptbl}
+% \begin{tabular}{!{\vrule width 1pt} c | c | c | c !{\vrule width 1pt} c | c | c | c | c | c !{\vrule width 1pt} c | c | c | c | c | c !{\vrule width 1pt} c | c | c | c | c | c !{\vrule width 1pt}}\noalign{\hrule height 1pt}
+% \multicolumn{4}{!{\vrule width 1pt} c !{\vrule width 1pt}}{} & \multicolumn{6}{ c !{\vrule width 1pt}}{Mastrovito} & \multicolumn{6}{ c !{\vrule width 1pt}}{Montgomery} & \multicolumn{6}{ c !{\vrule width 1pt}}{Point Addition}\\ \noalign{\hrule height 1pt}
+% {\textit{\textbf{n}}} & {\textit{\textbf{m}}} & {\textit{\textbf{k}}} & {\textbf{AM}} & {\textbf{\#G}} & {\textbf{\#BO}} & {\textbf{PBS}} & {\textbf{VMS}} & {\textbf{RC}} & {\textbf{TE}}& {\textbf{\#G}} & {\textbf{\#BO}} & {\textbf{PBS}} & {\textbf{VMS}} 
+% & {\textbf{RC}} & {\textbf{TE}}& {\textbf{\#G}} & {\textbf{\#BO}} & {\textbf{PBS}} & {\textbf{VMS}} & {\textbf{RC}} & {\textbf{TE}}\\ \noalign{\hrule height 1pt}
+% %\mb{16}  & \mb{3} & \mb{48}   & 0.03 & Y & 0.8  & 0.04   & 0.02  & 0.01  & 0.10  & 0.9   & 0.1   & 0.2  & 3    & 3.15 & 0.9  & 0.1  & 0.2  & 72    & 74    \\ \hline
+% %\mb{32 } & \mb{2} & \mb{32 }  & 0.03 & Y & 2.8  & 0.13   & 0.02  & 0.01  & 0.19  & 2.8   & 0.12  & 0.2  & 0.8  & 1    & 2.9  & 0.17 & 0.2  & 0.98  & 1.2   \\ \hline
+% %\mb{48 } & \mb{3} & \mb{48  } & 0.04 & Y & 12.2 & 0.6    & 0.29  & 0.01  & 0.8   & 6.4   & 0.5   & 0.4  & 0.1  & 0.9  & 6.4  & 0.5  & 0.4  & 0.1   & 0.9   \\ \hline
+% %\mb{96 } & \mb{7} & \mb{672 } & 1.4  & Y & 24.5 &        &       &       &       & 21    &       &      &      &      & 24.8 &      &      &       &       \\ \hline
+% %\mb{16}  & \mb{3} & \mb{48}   & 0.03 & N & 0.8  & 0.04   & 0.02  & 0.02  & 0.11  & 0.9   &       &      &      &      & 0.9  &      &      &       &       \\ \hline
+% %\mb{32 } & \mb{7} & \mb{224 } & 0.07 & N & 2.8  &        &       &       &       & 2.8   &       &      &      &      & 2.9  &      &      &       &       \\ \hline
+% %\mb{163} & \mb{2} & \mb{326 } & 0.15 & Y & 69.8 & 6.25   &  0.68 & 2.0   & 9.08  & 57.5  & 5.2   & 3.3  & 295   & 305   & 71.6 & 16.1 & 1.9  & 735   & 754   \\ \hline
+% \mb{16}  & \mb{5} & \mb{80  } & 100 & 0.8  & 6  & 0.04 & 0.03  & 0.12  & 0.22 & 0.9  & 16  & 0.04 & 0.48 & 35.3     & 35.9 & 0.9  & 7   & 0.06 & 0.08 & 1.73 & 1.9  \\ \hline
+% \mb{32 } & \mb{5} & \mb{160 } & 120 & 2.8  & 8  & 0.13 & 0.06  & 0.4   & 0.65 & 2.8  & 32  & 0.13 & 0.54 & 27.6     & 28.3 & 2.9  & 13  & 0.18 & 0.53 & 134  & 135  \\ \hline
+% \mb{64 } & \mb{3} & \mb{192 } & 160 & 11.2 & 5  & 0.57 & 0.54  & 227   & 228  & 9.6  & 47  & 0.52 & 0.27 & 1.79     & 2.63 & 10.6 & 64  & 0.84 & 0.45 & 58.1 & 59.5 \\ \hline
+% \mb{96 } & \mb{2} & \mb{96  } & 240 & 24.5 & 5  & 1.47 & 0.21  & 0.83  & 2.56 & 21   & 96  & 1.36 & 1.19 & 13.3     & 15.9 & 24.8 & 96  & 2.46 & 0.57 & 14.9 & 18   \\ \hline
+% \mb{128} & \mb{2} & \mb{128 } & 370 & 43.2 & 5  & 3.23 & 0.4   & 2.03  & 5.76 & 35.8 & 128 & 2.8  & 1.3  & 64.2     & 68.4 & 43.2 & 128 & 6.45 & 1.55 & 72.8 & 81   \\ \hline
+% \mb{163} & \mb{5} & \mb{815 } & 550 & 69.8 & 6  & 6.04 & 1.03  & 11.9  & 21.3 & 57.5 & 128 & 5.19 & 4.34 & 262      & 274  & 71.6 & 22  & 15.7 & 2.31 & 15   & 35.4 \\ \hline
+% \mb{233} & \mb{2} & \mb{466 } & 750 & 119  & 3  & 13   & 1     & 0.01  & 14.2 & 112  & 233 & 11.5 & 3.4  & 360      & 375  & 122  & 233 & 19.2 & 1.5  & 0.15 & 21.5 \\ \hline
+% \mb{283} & \mb{2} & \mb{566 } & 1300& 190  & 2  & 38   & 1.9   & 0.1   & 42.3 & 171  & 283 & 35   & 9.2  & 1503     & 1549 & 208  & 4   & 80.4 & 4.1  & 0.1  & 86.6 \\ \hline
+% \mb{409} & \mb{2} & \mb{818 } & 2400& 384  & 2  & 190  & 3.6   & 0.1   & 195  & 340  & 409 & 134  & 9    & 4920*    & 5064 & 368  & 409 & 220  & 7    & 2007 & 2237 \\ \hline
+% \mb{571} & \mb{2} & \mb{1042} & 5000& 827  & 5  & 2150 & 8.9   & 0.1   & 2162 & 663  &     & 1313 & 73   & 0.2$\td$ & 1395 & 813  & 5   & 2583 & 17.7 & 880  & 3490 \\ \hline\hline
+% \mb{16}  & \mb{7} & \mb{112 } & 100 & 0.8  & 11 & 0.04 & 0.11  & 4.96  & 5.14 & 0.9  & 13  & 0.05 & 1.54 & 228      & 230  & 0.9  & 12  & 0.05 & 0.62 & 32.9 & 33.6 \\ \hline
+% \mb{32 } & \mb{5} & \mb{160 } & 120 & 2.8  & 8  & 0.13 & 0.04  & 0.81  & 1.03 & 2.8  & 32  & 0.13 & 0.95 & 100      & 101  & 2.9  & 13  & 0.18 & 0.71 & 244  & 245  \\ \hline
+% \mb{64 } & \mb{3} & \mb{192 } & 160 & 11.2 & 5  & 0.58 & 0.18  & 1.64  & 2.45 & 9.6  & 47  & 0.51 & 0.39 & 10.4     & 11.4 & 10.6 & 5   & 0.79 & 0.25 & 3.96 & 5.05 \\ \hline
+% \mb{96 } & \mb{2} & \mb{96  } & 240 & 24.5 & 5  & 1.48 & 0.2   & 0.04  & 1.77 & 21   & 96  & 1.34 & 2.04 & 87.5     & 90.9 & 24.8 & 96  & 2.44 & 0.62 & 35.5 & 38.6 \\ \hline
+% \mb{128} & \mb{2} & \mb{128 } & 370 & 43.2 & 5  & 3.21 & 0.43  & 0.1   & 3.84 & 35.8 & 128 & 2.7  & 1.3  & 66       & 70   & 43.2 & 128 & 6.1  & 1    & 73   & 81   \\ \hline
+% \mb{163} & \mb{5} & \mb{815 } & 550 & 69.8 & 6  & 6.3  & 1.06  & 12    & 21.7 & 57.5 & 128 & 5.31 & 5.26 & 524      & 537  & 71.6 & 22  & 15.8 & 2.46 & 37   & 57.6 \\ \hline
+% \mb{409} & \mb{2} & \mb{818 } & 2400& 384  & 2  & 208  & 3.76  & 0.03  & 212  & 340  & 13  & 127  & 6.76 & 0.13     & 135  & 368  & 3   & 210  & 8.04 & 928  & 1146 \\ \hline
+% \mb{571} & \mb{2} & \mb{1042} & 5000& 827  & 5  & 2246 & 8.53  & 0.11  & 2256 & 663  & 427 & 1358 & 62.3 & 2.24     & 1424 & 813  & 5   & 2433 & 16.7 & 4.94 & 2457 \\ \noalign{\hrule height 1pt}
+% \end{tabular}
+% \end{table*}
+
+\begin{table*}[t]
+\caption{ 
+% The notations in the columns denote the following: 
+Time is in seconds; $\textit{n}$ = Datapath Size, $\textit{m}$ = target word size, 
+$\textit{k}$ = composite field size (degree of $P_k(X)$), 
+AM = Maximum resident memory utilization in Mega Bytes (Average across benchmarks),
+\#G = Number of gates $\times 10^3$, \#BO = Number of incorrect outputs, 
+PBS = Required time for PolyBori setup (ring declaration/poly collection/spec collection),
+% VF = time for verification (Sec.~\ref{sec:verify}), MS = Multi-fix check setup time (Sec.~\ref{sec:comps} [Rectification Setup]), RC = time for MFR check (Thm.~\ref{Thm:rect}), TE = Total execution time.}}
+VMS = Required time for verification, polynomial factorization and computing $P_k(X)$, and MFR setup, 
+RC = Required time for MFR check, TE = Required time for total execution }
+
+\label{exptbl}
+\resizebox{\linewidth}{!}{
+\begin{tabular}{!{\vrule width 1pt} c | c | c | c !{\vrule width 1pt} c | c | c | c | c | c !{\vrule width 1pt} c | c | c | c | c | c !{\vrule width 1pt} c | c | c | c | c | c !{\vrule width 1pt}}\noalign{\hrule height 1pt}
+\multicolumn{4}{!{\vrule width 1pt} c !{\vrule width 1pt}}{} & \multicolumn{6}{ c !{\vrule width 1pt}}{Mastrovito} & \multicolumn{6}{ c !{\vrule width 1pt}}{Montgomery} & \multicolumn{6}{ c !{\vrule width 1pt}}{Point Addition}\\ \noalign{\hrule height 1pt}
+
+{\textit{\textbf{n}}} & {\textit{\textbf{m}}} & {\textit{\textbf{k}}} & {\textbf{AM}} & {\textbf{\#G}} & {\textbf{\#BO}} & {\textbf{PBS}} & {\textbf{VMS}} & {\textbf{RC}} & {\textbf{TE}}& {\textbf{\#G}} & {\textbf{\#BO}} & {\textbf{PBS}} & {\textbf{VMS}} 
+& {\textbf{RC}} & {\textbf{TE}}& {\textbf{\#G}} & {\textbf{\#BO}} & {\textbf{PBS}} & {\textbf{VMS}} & {\textbf{RC}} & {\textbf{TE}}\\ \noalign{\hrule height 1pt}
+
+%\mb{16}  & \mb{3} & \mb{48}   & 0.03 & Y & 0.8  & 0.04   & 0.02  & 0.01  & 0.10  & 0.9   & 0.1   & 0.2  & 3    & 3.15 & 0.9  & 0.1  & 0.2  & 72    & 74    \\ \hline
+%\mb{32 } & \mb{2} & \mb{32 }  & 0.03 & Y & 2.8  & 0.13   & 0.02  & 0.01  & 0.19  & 2.8   & 0.12  & 0.2  & 0.8  & 1    & 2.9  & 0.17 & 0.2  & 0.98  & 1.2   \\ \hline
+%\mb{48 } & \mb{3} & \mb{48  } & 0.04 & Y & 12.2 & 0.6    & 0.29  & 0.01  & 0.8   & 6.4   & 0.5   & 0.4  & 0.1  & 0.9  & 6.4  & 0.5  & 0.4  & 0.1   & 0.9   \\ \hline
+%\mb{96 } & \mb{7} & \mb{672 } & 1.4  & Y & 24.5 &        &       &       &       & 21    &       &      &      &      & 24.8 &      &      &       &       \\ \hline
+%\mb{16}  & \mb{3} & \mb{48}   & 0.03 & N & 0.8  & 0.04   & 0.02  & 0.02  & 0.11  & 0.9   &       &      &      &      & 0.9  &      &      &       &       \\ \hline
+%\mb{32 } & \mb{7} & \mb{224 } & 0.07 & N & 2.8  &        &       &       &       & 2.8   &       &      &      &      & 2.9  &      &      &       &       \\ \hline
+%\mb{163} & \mb{2} & \mb{326 } & 0.15 & Y & 69.8 & 6.25   &  0.68 & 2.0   & 9.08  & 57.5  & 5.2   & 3.3  & 295   & 305   & 71.6 & 16.1 & 1.9  & 735   & 754   \\ \hline
+\mb{16}  & \mb{5} & \mb{80  } & 100 & 0.8  & 6  & 0.04 & 0.03  & 0.12  & 0.22 & 0.9  & 16  & 0.04 & 0.48 & 35.3     & 35.9 & 0.9  & 7   & 0.06 & 0.08 & 1.73 & 1.9  \\ \hline
+\mb{32 } & \mb{5} & \mb{160 } & 120 & 2.8  & 8  & 0.13 & 0.06  & 0.4   & 0.65 & 2.8  & 32  & 0.13 & 0.54 & 27.6     & 28.3 & 2.9  & 13  & 0.18 & 0.53 & 134  & 135  \\ \hline
+\mb{64 } & \mb{3} & \mb{192 } & 160 & 11.2 & 5  & 0.57 & 0.54  & 227   & 228  & 9.6  & 47  & 0.52 & 0.27 & 1.79     & 2.63 & 10.6 & 64  & 0.84 & 0.45 & 58.1 & 59.5 \\ \hline
+\mb{96 } & \mb{2} & \mb{96  } & 240 & 24.5 & 5  & 1.47 & 0.21  & 0.83  & 2.56 & 21   & 96  & 1.36 & 1.19 & 13.3     & 15.9 & 24.8 & 96  & 2.46 & 0.57 & 14.9 & 18   \\ \hline
+\mb{128} & \mb{2} & \mb{128 } & 370 & 43.2 & 5  & 3.23 & 0.4   & 2.03  & 5.76 & 35.8 & 128 & 2.8  & 1.3  & 64.2     & 68.4 & 43.2 & 128 & 6.45 & 1.55 & 72.8 & 81   \\ \hline
+\mb{163} & \mb{5} & \mb{815 } & 550 & 69.8 & 6  & 6.04 & 1.03  & 11.9  & 21.3 & 57.5 & 128 & 5.19 & 4.34 & 262      & 274  & 71.6 & 22  & 15.7 & 2.31 & 15   & 35.4 \\ \hline
+\mb{233} & \mb{2} & \mb{466 } & 750 & 119  & 3  & 13   & 1     & 0.01  & 14.2 & 112  & 233 & 11.5 & 3.4  & 360      & 375  & 122  & 233 & 19.2 & 1.5  & 0.15 & 21.5 \\ \hline
+\mb{283} & \mb{2} & \mb{566 } & 1300& 190  & 2  & 38   & 1.9   & 0.1   & 42.3 & 171  & 283 & 35   & 9.2  & 1503     & 1549 & 208  & 4   & 80.4 & 4.1  & 0.1  & 86.6 \\ \hline
+\mb{409} & \mb{2} & \mb{818 } & 2400& 384  & 2  & 190  & 3.6   & 0.1   & 195  & 340  & 409 & 134  & 9    & 4920*    & 5064 & 368  & 409 & 220  & 7    & 2007 & 2237 \\ \hline
+\mb{571} & \mb{2} & \mb{1042} & 5000& 827  & 5  & 2150 & 8.9   & 0.1   & 2162 & 663  &     & 1313 & 73   & 0.2$\td$ & 1395 & 813  & 5   & 2583 & 17.7 & 880  & 3490 \\ \hline\hline
+\mb{16}  & \mb{7} & \mb{112 } & 100 & 0.8  & 11 & 0.04 & 0.11  & 4.96  & 5.14 & 0.9  & 13  & 0.05 & 1.54 & 228      & 230  & 0.9  & 12  & 0.05 & 0.62 & 32.9 & 33.6 \\ \hline
+\mb{32 } & \mb{5} & \mb{160 } & 120 & 2.8  & 8  & 0.13 & 0.04  & 0.81  & 1.03 & 2.8  & 32  & 0.13 & 0.95 & 100      & 101  & 2.9  & 13  & 0.18 & 0.71 & 244  & 245  \\ \hline
+\mb{64 } & \mb{3} & \mb{192 } & 160 & 11.2 & 5  & 0.58 & 0.18  & 1.64  & 2.45 & 9.6  & 47  & 0.51 & 0.39 & 10.4     & 11.4 & 10.6 & 5   & 0.79 & 0.25 & 3.96 & 5.05 \\ \hline
+\mb{96 } & \mb{2} & \mb{96  } & 240 & 24.5 & 5  & 1.48 & 0.2   & 0.04  & 1.77 & 21   & 96  & 1.34 & 2.04 & 87.5     & 90.9 & 24.8 & 96  & 2.44 & 0.62 & 35.5 & 38.6 \\ \hline
+\mb{128} & \mb{2} & \mb{128 } & 370 & 43.2 & 5  & 3.21 & 0.43  & 0.1   & 3.84 & 35.8 & 128 & 2.7  & 1.3  & 66       & 70   & 43.2 & 128 & 6.1  & 1    & 73   & 81   \\ \hline
+\mb{163} & \mb{5} & \mb{815 } & 550 & 69.8 & 6  & 6.3  & 1.06  & 12    & 21.7 & 57.5 & 128 & 5.31 & 5.26 & 524      & 537  & 71.6 & 22  & 15.8 & 2.46 & 37   & 57.6 \\ \hline
+\mb{409} & \mb{2} & \mb{818 } & 2400& 384  & 2  & 208  & 3.76  & 0.03  & 212  & 340  & 13  & 127  & 6.76 & 0.13     & 135  & 368  & 3   & 210  & 8.04 & 928  & 1146 \\ \hline
+\mb{571} & \mb{2} & \mb{1042} & 5000& 827  & 5  & 2246 & 8.53  & 0.11  & 2256 & 663  & 427 & 1358 & 62.3 & 2.24     & 1424 & 813  & 5   & 2433 & 16.7 & 4.94 & 2457 \\ \noalign{\hrule height 1pt}
+\end{tabular}
+}
+\end{table*}
+
+%\begin{Proof}
+%We omit the proof due to the space limitation. 
+%\end{Proof}
+
+A detailed proof of the above theorem can be devised using the
+ideal-variety correspondences. However, the proof is omitted due to
+the strict page  limit on the manuscript. Instead, we explain the
+intuition behind Thm.~\ref{Thm:rect}, and show how it can be applied
+for MFR check.
+
+Due to WRTO $>_R$, each $rem_l$ comprises only $X_{PI}$
+variables. This is because under WRTO $>_R$, each gate output becomes
+a leading term of some polynomial in $F'$. However, as primary inputs 
+cannot be gate outputs, they do not appear as a leading term
+of any polynomial. As a result, the computation
+$f\xrightarrow{F'_l\cup F'_0}_+rem_l$ cancels all non primary input
+variables during polyomial division, and results in remainders with
+only primary inputs in their support. Hence, $V(rem_l) \subseteq
+\F_{2}^{|X_{PI}|}$. The variety of  $rem_l$  corresponds to the set of
+assignments to primary inputs $X_{PI}$ (minterms) where the
+specification $f$ agrees with the implementation $C$. Thus, the
+condition of Thm.~\ref{Thm:rect} implies that the union of individual
+varieties of $rem_l$'s comprises the entire input test set. Thus, for
+every minterm from the input test space, there exists an assignment
+$\delta[l]$ to $W$ where $f$ and $C$ match.  Consequently, there
+exists a function $U(X_{PI})$ that can be computed to rectify every
+error minterm.  
+
+% \begin{Proof}
+% As the correction at target $W$ makes $C$ match $f$, $f$ should vanish on
+% $V_{\Fkk}(J')$.
+% Moreover, each $rem_l$ comprises only $X_{PI}$ variables. This is
+% because WRTO $>_R$ ensures that each non primary input variable (each gate
+% output and  word-level variable) appears as the leading term of some
+% polynomial in $F'$. Thus each non primary input variable is canceled
+% in the reduction $f\xrightarrow{F'_l, F'_{0}}_+ rem_l$. Furthermore,
+% as $X_{PI}$ take values in $\F_2$, $x^2=x, \forall x \in
+% X_{PI}$. Hence, 
+% % even though $V_{\Fkk}(J')$ is evaluated in $\Fkk$,
+% $V(rem_l) \subseteq \F_{2}^{|X_{PI}|}$. Thus, the rectification theorem
+%  can be equivalently stated as: ``$f$ vanishes on
+% \begin{small}
+% $V_{\Fkk}(J') \iff \bigcup\limits_{l=1}^{2^m}V(rem_l) = \Ftwo^{|X_{PI}|}$''.
+% \end{small} 
+
+% (i) {\bf To prove ``$\Rightarrow$''}: Let $x_{PI} \in \Ftwo^{|X_{PI}|}$ be an
+% assignment to the primary input variables of $C$. Every assignment
+% $x_{PI}$ results in a corresponding assignment $x_{int}$ 
+% to rest of the variables in $C$. For each such point $(x_{PI},x_{int})\in \Fkk$,
+% the target $W$ evaluates to one of the values in the list $\delta$,
+% i.e. $(0,1,\be,\dots,\beta^{2^m-2})$. When $W = 0$, $J'_1$ vanishes on
+% the point $(x_{PI},x_{int})$. Likewise, $J'_2$ vanishes on
+% $(x_{PI},x_{int})$ when $W = 1$, and so on. Since
+% $f\xrightarrow{F'_l\cup F'_0}_+rem_l,1 \leq l \leq 2^m$, and $f$ vanishes
+% on the point $(x_{PI},x_{int})$ to begin with, we obtain that for
+% every  primary input assignment $x_{PI}$, one of the $rem_l$ vanishes. This
+% implies that $ \bigcup\limits_{l=1}^{2^m}V(rem_l) = \Ftwo^{|X_{PI}|}$.
+
+% (ii) {\bf To prove ``$\Leftarrow$''}: Say there exists an assignment to the
+% primary inputs $x_{PI} \in \Ftwo^{|X_{PI}|}$ such that $rem_1$ vanishes on
+% $x_{PI}$, i.e. $rem_1(x_{PI})=0$. For the given point $x_{PI}$, the rest of the variables 
+% of $C$ get a corresponding assignment $x_{int}$. 
+% As $f\xrightarrow{F'_1\cup F'_0}_+ rem_1$, we have that $f$ is a member of the
+% ideal $J'_1 + J'_0 + \langle rem_1 \rangle$. Therefore, when
+% $rem_1(x_{PI})=0$, the ideal $J'_1$ also vanishes on $(x_{PI},x_{int}) \in \Fkk$
+% because the tuple $(x_{PI},x_{int})$ is a valid evaluation of the circuit.
+% Further, $J'_0$ by definition vanishes everywhere in $R'$. This implies that
+% $f(x_{PI},x_{int})=0$. The argument similarly holds for each
+% $rem_{l}$ vanishing on some $x_{PI}$. This proves that for all primary
+% inputs, if any $rem_l:1 \leq l \leq 2^m$ vanishes, then $f$ vanishes too; and 
+% that completes the proof.
+% \end{Proof}
+ 
+
+%where the union of
+%varieties corresponds to the product of ideals and is characterized by
+%Strong Nullstellensatz over finite fields ({\red refer Strong
+%  Nullstellensatz}). 
+%% \begin{small}
+%% \begin{align*}
+%% &\bigcup\limits_{l=1}^{2^m}V(rem_l) =V_{\Ftwo}( \prod_{l=1}^{2^m}
+%%   rem_l)= V_{\Ftwo}( \langle \prod_{l=1}^{2^m} rem_l \rangle +
+%%   J_0^{X_{PI}} ) \\
+%% & \quad\quad\quad\quad\quad\quad\quad\quad = V_{\Ftwo}(\langle \prod_{l=1}^{2^m} rem_l \rangle+ J_0^{PI})
+%%   % V_{\Fqbar}(\langle r_1\cdot \dots r_{2^m} \rangle+ J_0^{PI}) \\
+%% \end{align*}
+%% \end{small}
+%% Thus, to check for MFR at target $W$, we need
+%% to check if $\prod_{l=1}^{2^m} rem_l\xrightarrow{J_{0}^{PI}}_+0$?  
+
+Let $J_0^{X_{PI}} = \langle x^2-x: x\in X_{PI}\rangle$. Then
+$V(J_0^{X_{PI}}) = \F_2^{|X_{PI}|}$. As the union of varieties
+corresponds to the variety of the product of corresponding ideals
+(cf. Section \ref{sec:prelim}), we have that: 
+$\bigcup\limits_{l=1}^{2^m}V(rem_l) =
+%V_{\Ftwo}( \prod_{l=1}^{2^m}rem_l)=
+V_{\Ftwo}( \langle \prod_{l=1}^{2^m} rem_l \rangle +
+J_0^{X_{PI}} )$.  
+Therefore, to check for MFR at target $W$, the test ``Is
+${\scriptstyle \bigcup\limits_{l=1}^{2^m}V(rem_l) =
+  \F_2^{|X_{PI}|}}$'' can be performed by checking if
+$\prod_{l=1}^{2^m} rem_l\xrightarrow{J_{0}^{PI}}_+0$. 
+
+\begin{Example}
+\label{ex:3}
+{\it 
+Continuing on with the example from Ex. \ref{ex:rect_setup}, we
+demonstrate the rectification check at $W=\{r_3,rr_3\}$. 
+
+Constructing the $J'_l$ ideals:
+\bi
+\item {\small$J'_1 = \langle F'_1\rangle$, where $F'_1[f'_W]=W+\delta[1]=W$}
+\item {\small$J'_2 = \langle F'_2\rangle$, where $F'_2[f'_W]=W+\delta[2]=W+1$}
+\item {\small$J'_3 = \langle F'_3\rangle$, where $F'_3[f'_W]=W+\delta[3]=W+\be=W+\alpha^{21}$}
+\item {\small$J'_4 = \langle F'_4\rangle$, where $F'_4[f'_W]=W+\delta[4]=W+\be^2=W+\alpha^{42}$}
+\ei
+Reducing the $\spec$ $f: Z+A\cdot B$ modulo these ideals, we get:
+\bi
+\item $rem_1 = f \xrightarrow[]{F'_1\cup F'_{0}}_+{\al^{27} (a_2b_1b_2)+\al^{36} (a_2b_2)}$
+\item $rem_2 = f \xrightarrow[]{F'_2\cup F'_{0}}_+{\al^{27} (a_2b_1b_2+a_2b_1)+\al^{36} (a_2b_2)}$
+\item $rem_3 = f \xrightarrow[]{F'_3\cup F'_{0}}_+{\al^{27} (a_2b_1b_2)}$
+\item $rem_4 = f \xrightarrow[]{F'_4\cup F'_{0}}_+{\al^{27} (a_2b_1b_2+a_2b_1)}$
+\ei
+
+When we compute the product $\prod_{l=1}^{4} rem_l$, 
+and reduce it by $J_{0}^{X_{PI}}$ in $\F_{2^6}$ with
+$P_6(\alpha)=0$, we obtain the remainder 0, thus confirming
+that the target $W=\{w_0=r_3,w_1=rr_3\}$ indeed admits correction.
+Even though it is beyond the scope of this paper, $W=a_2b_1b_2+\be \cdot a_2b_2$ 
+is a polynomial which can be computed to rectify the circuit. 
+% In fact, the rectification test also passes with nets $d_2$ and $d_5$;
+% implying that we could have selected $w_0$ to be $d_2$ instead of $e_0$. 
+% However, the rectification test fails when $w_0=d_0$ and
+%  $w_1=d_5$. When the problem is formulated with these nets, $\prod_{l=1}^{4} 
+%  rem_l\xrightarrow{J_{0}^{X_{PI}}}_+\al^9a_2b_1b_2+\al^{36}a_2b_2$  implying that
+%  these nets do not admit correction.   
+}
+\end{Example}
+
+% \begin{algorithm}\label{rect_flow_alg}
+% \caption{Rectification of finite field arithmetic circuits}\label{pseudocode}
+% \begin{algorithmic}[1]
+% \Require $\spec:f, buggy~\impl: C$ modeled as a polynomial ideal $F=\{f_1\dots,f_s\}$ under $RTTO >$ 
+% \Assume {$C$ doesn't admit single-fix rectification} //~\cite{Vkrao:FMCAD18}
+% \Ensure {Rectification of $C$ to match $f$}
+% \Procedure{$rectification$}{} 
+% \State {remainder = $verify(f,F+F_0)$} // Sec.\ref{sec:verify}
+% \State {$\Oa = analyze$(remainder)} //Sec. V.1~\cite{Vkrao:FMCAD18}
+% \State {$\In = PotentialNets()$} //Sec.\ref{subsec:target_nets}
+% \State {$m = 2$; rectified = $False; \mathcal{O}_A = \emptyset ; F_w = \emptyset$}
+% \Do %1
+% \State {$\Oa^i = uniquePartition(\Oa,m)$}\label{prtn}
+% \If {$\Oa^i \notin \mathcal{O}_A$}
+% \State {$\mathcal{O}_A=\mathcal{O}_A \cup \Oa^i$}
+% \State {$\M^i = intersectionCover(\Oa^i)$}  
+% \State {$f_w=pickTargets(\M^i,m)$}\label{ptrgt}
+% \If {$f_w \notin F_w$}
+% \State {$F_w=F_w \cup f_w$}
+% \State {$MFRSetup()$} //Sec.\ref{subsec:comp_fwrk}
+% \If {$MFRCheck(F')==0$} //Sec.\ref{sec:rcheck}
+% \State {rectified = $True$}
+% \State {patch = $rectFunction$()} //Sec.\ref{sec:rfunc}
+% \Else
+% \State {$goto~\ref{ptrgt}$}
+% \EndIf
+% \Else
+% \State {$goto~\ref{prtn}$}
+% \EndIf
+% \Else
+% \State $m++$
+% \EndIf
+% \doWhile {((!rectified) $\&\&$ $m \le |\Oa|$)} %1
+% \State \Return patch
+% \EndProcedure
+% \end{algorithmic}
+% \end{algorithm}
