@@ -147,7 +147,8 @@ where $F'=\{f_1,\dots,\bm{f_W:W+\sum_{i=0}^{m-1}\beta^i \cdot w_i},
 \dots,f_s\}$, and $J'_0=\langle F'_0\rangle$ the corresponding ideal
 of vanishing polynomials in $R'$. Impose WRTO $>_R$ on $R'$.
 %(Setup as described in Sec.\ref{sec:rsetup}),
-Construct the following ideals:  
+Construct the following ideals: 
+
 \bi
 \item {\small $J'_l = \langle F'_l\rangle =\langle f_1,\dots,f'_W=W+\delta[l],\dots,f_s\rangle$},
   $1 \leq l \leq 2^m$, where $F'_l$ is obtained from $F'$ by
@@ -155,6 +156,7 @@ Construct the following ideals:
   and $(\delta[1],\dots,\delta[2^{m}]) =
   (0,1,\be,\dots,\be^{2^m-2})$. 
 \ei
+
 Reduce $f$ by $F'_l\cup F'_0$ to obtain the remainders $rem_l$: 
 $f\xrightarrow{F'_l\cup F'_{0}}_+ rem_l,$  for $1 \leq l \leq 2^m$. 
 Then, there exists a polynomial function 
@@ -215,10 +217,10 @@ $U(X_{PI}): \F_{2}^{|X_{PI}|}\rightarrow \F_{2^m}$, which, when
 \begin{table*}[t]
 \caption{ 
 % The notations in the columns denote the following: 
-Time is in seconds; $\textit{n}$ = Datapath Size, $\textit{m}$ = target word size, 
+Time is in seconds; $\textit{I}$ = Index, $\textit{n}$ = Datapath Size, $\textit{m}$ = target word size, 
 $\textit{k}$ = composite field size (degree of $P_k(X)$), 
-AM = Maximum resident memory utilization in Mega Bytes (Average across benchmarks),
-\#G = Number of gates $\times 10^3$, \#BO = Number of incorrect outputs, 
+AM = Maximum resident memory utilization in Mega Bytes,
+\#G = Number of gates $\times 10^3$, \#BO = Number of faulty outputs, 
 PBS = Required time for PolyBori setup (ring declaration/poly collection/spec collection),
 % VF = time for verification (Sec.~\ref{sec:verify}), MS = Multi-fix check setup time (Sec.~\ref{sec:comps} [Rectification Setup]), RC = time for MFR check (Thm.~\ref{Thm:rect}), TE = Total execution time.}}
 VMS = Required time for verification, polynomial factorization and computing $P_k(X)$, and MFR setup, 
@@ -226,10 +228,10 @@ RC = Required time for MFR check, TE = Required time for total execution }
 
 \label{exptbl}
 \resizebox{\linewidth}{!}{
-\begin{tabular}{!{\vrule width 1pt} c | c | c | c !{\vrule width 1pt} c | c | c | c | c | c !{\vrule width 1pt} c | c | c | c | c | c !{\vrule width 1pt} c | c | c | c | c | c !{\vrule width 1pt}}\noalign{\hrule height 1pt}
-\multicolumn{4}{!{\vrule width 1pt} c !{\vrule width 1pt}}{} & \multicolumn{6}{ c !{\vrule width 1pt}}{Mastrovito} & \multicolumn{6}{ c !{\vrule width 1pt}}{Montgomery} & \multicolumn{6}{ c !{\vrule width 1pt}}{Point Addition}\\ \noalign{\hrule height 1pt}
+\begin{tabular}{!{\vrule width 1pt} c | c | c | c | c !{\vrule width 1pt} c | c | c | c | c | c !{\vrule width 1pt} c | c | c | c | c | c !{\vrule width 1pt} c | c | c | c | c | c !{\vrule width 1pt}}\noalign{\hrule height 1pt}
+\multicolumn{5}{!{\vrule width 1pt} c !{\vrule width 1pt}}{} & \multicolumn{6}{ c !{\vrule width 1pt}}{Mastrovito} & \multicolumn{6}{ c !{\vrule width 1pt}}{Montgomery} & \multicolumn{6}{ c !{\vrule width 1pt}}{Point Addition}\\ \noalign{\hrule height 1pt}
 
-{\textit{\textbf{n}}} & {\textit{\textbf{m}}} & {\textit{\textbf{k}}} & {\textbf{AM}} & {\textbf{\#G}} & {\textbf{\#BO}} & {\textbf{PBS}} & {\textbf{VMS}} & {\textbf{RC}} & {\textbf{TE}}& {\textbf{\#G}} & {\textbf{\#BO}} & {\textbf{PBS}} & {\textbf{VMS}} 
+{\textit{I}} & {\textit{\textbf{n}}} & {\textit{\textbf{m}}} & {\textit{\textbf{k}}} & {\textbf{AM}} & {\textbf{\#G}} & {\textbf{\#BO}} & {\textbf{PBS}} & {\textbf{VMS}} & {\textbf{RC}} & {\textbf{TE}}& {\textbf{\#G}} & {\textbf{\#BO}} & {\textbf{PBS}} & {\textbf{VMS}} 
 & {\textbf{RC}} & {\textbf{TE}}& {\textbf{\#G}} & {\textbf{\#BO}} & {\textbf{PBS}} & {\textbf{VMS}} & {\textbf{RC}} & {\textbf{TE}}\\ \noalign{\hrule height 1pt}
 
 %\mb{16}  & \mb{3} & \mb{48}   & 0.03 & Y & 0.8  & 0.04   & 0.02  & 0.01  & 0.10  & 0.9   & 0.1   & 0.2  & 3    & 3.15 & 0.9  & 0.1  & 0.2  & 72    & 74    \\ \hline
@@ -239,24 +241,24 @@ RC = Required time for MFR check, TE = Required time for total execution }
 %\mb{16}  & \mb{3} & \mb{48}   & 0.03 & N & 0.8  & 0.04   & 0.02  & 0.02  & 0.11  & 0.9   &       &      &      &      & 0.9  &      &      &       &       \\ \hline
 %\mb{32 } & \mb{7} & \mb{224 } & 0.07 & N & 2.8  &        &       &       &       & 2.8   &       &      &      &      & 2.9  &      &      &       &       \\ \hline
 %\mb{163} & \mb{2} & \mb{326 } & 0.15 & Y & 69.8 & 6.25   &  0.68 & 2.0   & 9.08  & 57.5  & 5.2   & 3.3  & 295   & 305   & 71.6 & 16.1 & 1.9  & 735   & 754   \\ \hline
-\mb{16}  & \mb{5} & \mb{80  } & 100 & 0.8  & 6  & 0.04 & 0.03  & 0.12  & 0.22 & 0.9  & 16  & 0.04 & 0.48 & 35.3     & 35.9 & 0.9  & 7   & 0.06 & 0.08 & 1.73 & 1.9  \\ \hline
-\mb{32 } & \mb{5} & \mb{160 } & 120 & 2.8  & 8  & 0.13 & 0.06  & 0.4   & 0.65 & 2.8  & 32  & 0.13 & 0.54 & 27.6     & 28.3 & 2.9  & 13  & 0.18 & 0.53 & 134  & 135  \\ \hline
-\mb{64 } & \mb{3} & \mb{192 } & 160 & 11.2 & 5  & 0.57 & 0.54  & 227   & 228  & 9.6  & 47  & 0.52 & 0.27 & 1.79     & 2.63 & 10.6 & 64  & 0.84 & 0.45 & 58.1 & 59.5 \\ \hline
-\mb{96 } & \mb{2} & \mb{96  } & 240 & 24.5 & 5  & 1.47 & 0.21  & 0.83  & 2.56 & 21   & 96  & 1.36 & 1.19 & 13.3     & 15.9 & 24.8 & 96  & 2.46 & 0.57 & 14.9 & 18   \\ \hline
-\mb{128} & \mb{2} & \mb{128 } & 370 & 43.2 & 5  & 3.23 & 0.4   & 2.03  & 5.76 & 35.8 & 128 & 2.8  & 1.3  & 64.2     & 68.4 & 43.2 & 128 & 6.45 & 1.55 & 72.8 & 81   \\ \hline
-\mb{163} & \mb{5} & \mb{815 } & 550 & 69.8 & 6  & 6.04 & 1.03  & 11.9  & 21.3 & 57.5 & 128 & 5.19 & 4.34 & 262      & 274  & 71.6 & 22  & 15.7 & 2.31 & 15   & 35.4 \\ \hline
-\mb{233} & \mb{2} & \mb{466 } & 750 & 119  & 3  & 13   & 1     & 0.01  & 14.2 & 112  & 233 & 11.5 & 3.4  & 360      & 375  & 122  & 233 & 19.2 & 1.5  & 0.15 & 21.5 \\ \hline
-\mb{283} & \mb{2} & \mb{566 } & 1300& 190  & 2  & 38   & 1.9   & 0.1   & 42.3 & 171  & 283 & 35   & 9.2  & 1503     & 1549 & 208  & 4   & 80.4 & 4.1  & 0.1  & 86.6 \\ \hline
-\mb{409} & \mb{2} & \mb{818 } & 2400& 384  & 2  & 190  & 3.6   & 0.1   & 195  & 340  & 409 & 134  & 9    & 4920*    & 5064 & 368  & 409 & 220  & 7    & 2007 & 2237 \\ \hline
-\mb{571} & \mb{2} & \mb{1042} & 5000& 827  & 5  & 2150 & 8.9   & 0.1   & 2162 & 663  &     & 1313 & 73   & 0.2$\td$ & 1395 & 813  & 5   & 2583 & 17.7 & 880  & 3490 \\ \hline\hline
-\mb{16}  & \mb{7} & \mb{112 } & 100 & 0.8  & 11 & 0.04 & 0.11  & 4.96  & 5.14 & 0.9  & 13  & 0.05 & 1.54 & 228      & 230  & 0.9  & 12  & 0.05 & 0.62 & 32.9 & 33.6 \\ \hline
-\mb{32 } & \mb{5} & \mb{160 } & 120 & 2.8  & 8  & 0.13 & 0.04  & 0.81  & 1.03 & 2.8  & 32  & 0.13 & 0.95 & 100      & 101  & 2.9  & 13  & 0.18 & 0.71 & 244  & 245  \\ \hline
-\mb{64 } & \mb{3} & \mb{192 } & 160 & 11.2 & 5  & 0.58 & 0.18  & 1.64  & 2.45 & 9.6  & 47  & 0.51 & 0.39 & 10.4     & 11.4 & 10.6 & 5   & 0.79 & 0.25 & 3.96 & 5.05 \\ \hline
-\mb{96 } & \mb{2} & \mb{96  } & 240 & 24.5 & 5  & 1.48 & 0.2   & 0.04  & 1.77 & 21   & 96  & 1.34 & 2.04 & 87.5     & 90.9 & 24.8 & 96  & 2.44 & 0.62 & 35.5 & 38.6 \\ \hline
-\mb{128} & \mb{2} & \mb{128 } & 370 & 43.2 & 5  & 3.21 & 0.43  & 0.1   & 3.84 & 35.8 & 128 & 2.7  & 1.3  & 66       & 70   & 43.2 & 128 & 6.1  & 1    & 73   & 81   \\ \hline
-\mb{163} & \mb{5} & \mb{815 } & 550 & 69.8 & 6  & 6.3  & 1.06  & 12    & 21.7 & 57.5 & 128 & 5.31 & 5.26 & 524      & 537  & 71.6 & 22  & 15.8 & 2.46 & 37   & 57.6 \\ \hline
-\mb{409} & \mb{2} & \mb{818 } & 2400& 384  & 2  & 208  & 3.76  & 0.03  & 212  & 340  & 13  & 127  & 6.76 & 0.13     & 135  & 368  & 3   & 210  & 8.04 & 928  & 1146 \\ \hline
-\mb{571} & \mb{2} & \mb{1042} & 5000& 827  & 5  & 2246 & 8.53  & 0.11  & 2256 & 663  & 427 & 1358 & 62.3 & 2.24     & 1424 & 813  & 5   & 2433 & 16.7 & 4.94 & 2457 \\ \noalign{\hrule height 1pt}
+1  & \mb{16}  & \mb{5} & \mb{80  } & 100 & 0.8  & 6  & 0.04 & 0.03  & 0.12  & 0.22 & 0.9  & 16  & 0.04 & 0.48 & 35.3     & 35.9 & 0.9  & 7   & 0.06 & 0.08 & 1.73 & 1.9  \\ \hline
+2  & \mb{32 } & \mb{5} & \mb{160 } & 120 & 2.8  & 8  & 0.13 & 0.06  & 0.4   & 0.65 & 2.8  & 32  & 0.13 & 0.54 & 27.6     & 28.3 & 2.9  & 13  & 0.18 & 0.53 & 134  & 135  \\ \hline
+3  & \mb{64 } & \mb{3} & \mb{192 } & 160 & 11.2 & 5  & 0.57 & 0.54  & 227   & 228  & 9.6  & 47  & 0.52 & 0.27 & 1.79     & 2.63 & 10.6 & 64  & 0.84 & 0.45 & 58.1 & 59.5 \\ \hline
+4  & \mb{96 } & \mb{2} & \mb{96  } & 240 & 24.5 & 5  & 1.47 & 0.21  & 0.83  & 2.56 & 21   & 96  & 1.36 & 1.19 & 13.3     & 15.9 & 24.8 & 96  & 2.46 & 0.57 & 14.9 & 18   \\ \hline
+5  & \mb{128} & \mb{2} & \mb{128 } & 370 & 43.2 & 5  & 3.23 & 0.4   & 2.03  & 5.76 & 35.8 & 128 & 2.8  & 1.3  & 64.2     & 68.4 & 43.2 & 128 & 6.45 & 1.55 & 72.8 & 81   \\ \hline
+6  & \mb{163} & \mb{5} & \mb{815 } & 550 & 69.8 & 6  & 6.04 & 1.03  & 11.9  & 21.3 & 57.5 & 128 & 5.19 & 4.34 & 262      & 274  & 71.6 & 22  & 15.7 & 2.31 & 15   & 35.4 \\ \hline
+7  & \mb{233} & \mb{2} & \mb{466 } & 750 & 119  & 3  & 13   & 1     & 0.01  & 14.2 & 112  & 233 & 11.5 & 3.4  & 360      & 375  & 122  & 233 & 19.2 & 1.5  & 0.15 & 21.5 \\ \hline
+8  & \mb{283} & \mb{2} & \mb{566 } & 1300& 190  & 2  & 38   & 1.9   & 0.1   & 42.3 & 171  & 283 & 35   & 9.2  & 1503     & 1549 & 208  & 4   & 80.4 & 4.1  & 0.1  & 86.6 \\ \hline
+9  & \mb{409} & \mb{2} & \mb{818 } & 2400& 384  & 2  & 190  & 3.6   & 0.1   & 195  & 340  & 409 & 134  & 9    & 4920*    & 5064 & 368  & 409 & 220  & 7    & 2007 & 2237 \\ \hline
+10 & \mb{571} & \mb{2} & \mb{1042} & 5000& 827  & 5  & 2150 & 8.9   & 0.1   & 2162 & 663  &  12 & 1313 & 73   & 0.2$\td$ & 1395 & 813  & 5   & 2583 & 17.7 & 880  & 3490 \\ \hline\hline
+11 & \mb{16}  & \mb{7} & \mb{112 } & 100 & 0.8  & 11 & 0.04 & 0.11  & 4.96  & 5.14 & 0.9  & 13  & 0.05 & 1.54 & 228      & 230  & 0.9  & 12  & 0.05 & 0.62 & 32.9 & 33.6 \\ \hline
+12 & \mb{32 } & \mb{5} & \mb{160 } & 120 & 2.8  & 8  & 0.13 & 0.04  & 0.81  & 1.03 & 2.8  & 32  & 0.13 & 0.95 & 100      & 101  & 2.9  & 13  & 0.18 & 0.71 & 244  & 245  \\ \hline
+13 & \mb{64 } & \mb{3} & \mb{192 } & 160 & 11.2 & 5  & 0.58 & 0.18  & 1.64  & 2.45 & 9.6  & 47  & 0.51 & 0.39 & 10.4     & 11.4 & 10.6 & 5   & 0.79 & 0.25 & 3.96 & 5.05 \\ \hline
+14 & \mb{96 } & \mb{2} & \mb{96  } & 240 & 24.5 & 5  & 1.48 & 0.2   & 0.04  & 1.77 & 21   & 96  & 1.34 & 2.04 & 87.5     & 90.9 & 24.8 & 96  & 2.44 & 0.62 & 35.5 & 38.6 \\ \hline
+15 & \mb{128} & \mb{2} & \mb{128 } & 370 & 43.2 & 5  & 3.21 & 0.43  & 0.1   & 3.84 & 35.8 & 128 & 2.7  & 1.3  & 66       & 70   & 43.2 & 128 & 6.1  & 1    & 73   & 81   \\ \hline
+16 & \mb{163} & \mb{5} & \mb{815 } & 550 & 69.8 & 6  & 6.3  & 1.06  & 12    & 21.7 & 57.5 & 128 & 5.31 & 5.26 & 524      & 537  & 71.6 & 22  & 15.8 & 2.46 & 37   & 57.6 \\ \hline
+17 & \mb{409} & \mb{2} & \mb{818 } & 2400& 384  & 2  & 208  & 3.76  & 0.03  & 212  & 340  & 13  & 127  & 6.76 & 0.13     & 135  & 368  & 3   & 210  & 8.04 & 928  & 1146 \\ \hline
+18 & \mb{571} & \mb{2} & \mb{1042} & 5000& 827  & 5  & 2246 & 8.53  & 0.11  & 2256 & 663  & 427 & 1358 & 62.3 & 2.24     & 1424 & 813  & 5   & 2433 & 16.7 & 4.94 & 2457 \\ \noalign{\hrule height 1pt}
 \end{tabular}
 }
 \end{table*}

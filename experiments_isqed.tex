@@ -22,53 +22,7 @@
 % polynomial representation, we show how this 
 % GB-reduction can be efficiently implemented using algorithms that
 % specifically manipulate the ZDD graph. 
-% \begin{table*}[t]
-% \caption{{\footnotesize The notations in the columns denote the following: 
-% Time is in seconds; $\textit{n}$ = Datapath Size, $\textit{m}$ = word length of patch function, 
-% $\textit{k}$ = encompassing composite field size (degree of primpoly used), 
-% PF = time for polynomial factorization and computing primitive polynomial for the composite field, 
-% \#G = Number of gates $\times 10^3$, PBS = PolyBori setup time (ring declaration/poly collection/spec collection), 
-% VF = time for verification, MS = Multi-fix check setup time, RC = time for MFR check, TE = Total execution time.}}
-% \label{exptbl}
-% \begin{tabular}{!{\vrule width 1pt} c | c | c | c !{\vrule width 1pt} c | c | c | c | c | c !{\vrule width 1pt} c | c | c | c | c | c !{\vrule width 1pt} c | c | c | c | c | c !{\vrule width 1pt}}\noalign{\hrule height 1pt}
-% \multicolumn{4}{!{\vrule width 1pt} c !{\vrule width 1pt}}{} & \multicolumn{6}{ c !{\vrule width 1pt}}{Mastrovito} & \multicolumn{6}{ c !{\vrule width 1pt}}{Montgomery} & \multicolumn{6}{ c !{\vrule width 1pt}}{Point Addition}\\ \noalign{\hrule height 1pt}
-% {\textit{\textbf{n}}} & {\textit{\textbf{m}}} & {\textit{\textbf{k}}} & {\textbf{PF}} & {\textbf{\#G}} & {\textbf{PBS}} & {\textbf{VF}} & {\textbf{MS}} & {\textbf{RC}} & {\textbf{TE}}& {\textbf{\#G}} & {\textbf{PBS}} & {\textbf{VF}} & {\textbf{MS}} & {\textbf{RC}} & {\textbf{TE}}& {\textbf{\#G}} & {\textbf{PBS}} & {\textbf{VF}} & {\textbf{MS}} & {\textbf{RC}} & {\textbf{TE}}\\ \noalign{\hrule height 1pt}
-% \mb{16}   & \mb{3} & \mb{48}   & 0.1  & 0.8   & 0.1  & 0.1   & 0.1     & 0.1  & 0.6  & 0.9  & 0.1  & 0.1   & 0.1  & 3    & 3.15 & 0.9  & 0.1  & 0.1   & 0.1    & 72    & 74  \\ \hline
-% \mb{32 }  & \mb{2} & \mb{32  } & 0.1  & 2.8   & 0.1  & 0.1   & 0.1     & 0.2  & 0.6  & 2.8  & 0.12 & 0.1   & 0.1  & 0.8  & 1    & 2.9  & 0.17 & 0.1   & 0.1    & 0.98  & 1.2   \\ \hline
-% \mb{48 }  & \mb{3} & \mb{48  } & 0.1  & 6.4   & 0.3  & 0.1   & 0.1     & 0.2  & 0.8  & 6.4  & 0.5  & 0.3   & 0.1  & 0.1  & 0.9  & 6.4  & 0.5  & 0.3   & 0.1    & 0.1   & 0.9   \\ \hline
-% \mb{64 }  & \mb{2} & \mb{64  } & 0.1  & 11.2  & 0.5  & 0.1   & 0.1     & 0.2  & 0.73 & 9.6  & 0.5  & 0.21  & 2.4  & 23.9 & 27   & 10.6 & 0.7  & 0.1   & 0.1    & 12.1  & 13.2  \\ \hline
-% \mb{96 }  & \mb{2} & \mb{96  } & 0.1  & 24.5  & 1.4  & 0.1   & 0.1     & 0.1  & 1.7  & 21   & 1.4  & 0.42  & 0.75 & 13.4 & 16   & 24.8 & 2.4  & 0.3   & 0.1    & 15.4  & 18.4  \\ \hline
-% \mb{128}  & \mb{2} & \mb{128 } & 0.1  & 43.2  & 3.2  & 0.3   & 0.1     & 2.1  & 5.7  & 35.8 & 2.7  & 0.6   & 0.7  & 66   & 70   & 43.2 & 6.1  & 0.7   & 0.3    & 73    & 81    \\ \hline
-% \mb{163}  & \mb{2} & \mb{326 } & 0.4  & 69.8  & 6.2  & 0.4   & 0.25    & 2.1  & 9    & 57.5 & 5.2  & 1.1   & 2.2  & 295  & 305  & 71.6 & 16.1 & 1.4   & 0.5    & 735   & 754   \\ \hline
-% \mb{233}  & \mb{2} & \mb{466 } & 0.3  & 119   & 13   & 0.6   & 0.3     & 0.1  & 14.3 & 112  & 11.5 & 1.3   & 2.1  & 360  & 375  & 122  & 19.2 & 1.2   & 0.3    & 0.15  & 21.5  \\ \hline
-% \mb{283}  & \mb{2} & \mb{566 } & 2    & 190   & 38   & 1.2   & 0.7     & 0.1  & 42.3 & 171  & 35   & 3.1   & 6.1  & 1503 & 1549 & 208  & 80.4 & 2.8   & 1.3    & 0.1   & 86.6   \\ \hline
-% \mb{409}  & \mb{2} & \mb{818 } & 2    & 384   & 190  & 2.1   & 1.5     & 0.1  & 195  & 340  & 134  & 5.1   & 3.9  & 4920 & 5064 & 368  & 220  & 4     & 3      & 2007 & 2237  \\ \hline
-% \mb{571}  & \mb{2} & \mb{1042} & 3    & 827   & 2150 & 5.8   & 3.1     & 0.1  & 2162 & 663  & 1313 & 43   &  30 &  0.2 & 1395   & 813  &  2583    &  12  &   5.7   & 880  & 3490              \\ \noalign{\hrule height 1pt}
-% \end{tabular}
-% \end{table*}
-% This section presents experimental results of our MFR check approach
-% on various buggy finite field arithmetic circuits. 
-We implement our approach as a custom software by integrating PolyBori~\cite{pbori:JSC09} libraries,
-{\sc Singular}~\cite{DGPS_410} libraries, and a custom high level finite field engine.
-We utilize PolyBori’s reduction procedure to implement the division 
-$f\xrightarrow{F'_l\cup F'_{0}}_+ rem_l,$ $ 1 \leq l \leq 2^m$. The libraries from {\sc Singular} 
-are used to compute $P_k(X)$ and to model composite field characteristics.
-The custom finite field engine is employed in modeling bit-vector and coefficient computations,
-and is utilized in the overall decision procedure.
 
-Benchmarks are taken from~\cite{lv:tcad2013} and synthesized using the {\it abc} tool~\cite{abc} with a 
-two input gate library.
-We introduce bugs by means of gate and wiring modifications in the synthesized netlists such that multiple 
-output bits are affected by the bugs.
- % and the circuit is not single-fix rectifiable. 
-%To normalize the effect of bugs in the benchmark suites, 
-The changes are introduced at various topological levels: some closer to PIs, some in the middle of the
-circuit, and some near POs. In our experiments, we check the rectifiability of circuits, where the number of targets
-is chosen from $m=\{2,3,5,7\}$. 
-% However, our approach doesn't constrain the number of targets to check for rectifiability. 
-%subsequently, the rectification functions were computed at a word-level.
-The experiments are performed on a 3.5GHz 
-Intel(R) $\text{Core}^{\text{TM}}$ i7-4770K Quad-Core CPU with 32 GB RAM.
 % {\it implicit} characteristic set representation 
 % for storing and manipulating polynomials. 
 % The same framework 
@@ -94,9 +48,6 @@ Intel(R) $\text{Core}^{\text{TM}}$ i7-4770K Quad-Core CPU with 32 GB RAM.
 %  to model bit-vector and coefficient computations.
 % Further, we have also utilized polynomial algebra tool {\sc Singular}
 % ~\cite{DGPS_410} for finding primitive polynomials to help model composite field characteristics.
-% PAD - 14000 s - 409 - 54279665 multiplications
-% PAD  - 2237 s - 409 - 7363636 multiplications
-% PAD - 3482 - 571 - 2189802 multiplications
 % Subject to the given variable order, a ZDD represents a 
 % Boolean function canonically. Just as with BDDs, every node in a ZDD
 % is assigned an index, which corresponds to the variable order imposed
@@ -108,7 +59,7 @@ Intel(R) $\text{Core}^{\text{TM}}$ i7-4770K Quad-Core CPU with 32 GB RAM.
 % can be performed recursively on the ZDDs, and they have been implemented using the
 % ite-operator (if-then-else) in decision diagrams such as the CUDD [118] package. We extend
 % these operations to accommodate the sum and product operations ( mod 2 ) , i.e. polyno-
-% mial algebra in F 2 [ x 1 ,...,x n ] , by manipulating sets of combinations using ZDDs.
+% mial algebra in \Fkn, by manipulating sets of combinations using ZDDs.
 % Based on the above discussion, we will: i) model GBR as the algebra of unate cube
 % sets; ii) use ZDDs as the implicit data-structure for this GBR; and iii) devise efficient
 % implementation of GBR by exploiting the special structure imposed by RTTO on the ZDD
@@ -124,78 +75,56 @@ Intel(R) $\text{Core}^{\text{TM}}$ i7-4770K Quad-Core CPU with 32 GB RAM.
 % a rectification function.
 % In the result tables, the rows marked with an '*' indicate that the patch size $m$ is 
 % such that $m \nmid n$, hence requiring operations in composite field $\Fkk$, where $k = LCM(m,n)$.
- % IC = Incremental rectification check,
+ % IC = Incremental rectification c$$heck,
 
-% \begin{table}[]
-% \centering
-% \caption{{\footnotesize Benchmark: Mastrovito Multiplier}}
-% \label{mavsspec}
-% \begin{tabular}{| c | c | c | c | c | c | c | c | c | c |} \hline
-% % \multicolumn{6}{| c |}{Benchmark: Mastrovito} & \multicolumn{6}{ c |}{Benchmark: Montgomery} \\ \hline
-% {\textbf{n}} & {\textbf{\#Gates}} & {\textbf{m}} & {\textbf{k}} & {\textbf{PF}} & {\textbf{PBS}} & {\textbf{VF}} & {\textbf{MS}} & {\textbf{RC}} & {\textbf{TE}}\\ \hline 
-% 12   & 0.45K & 2 & 12   & 0.01 & 0.01 & 0.01  & 0.0     & 0.01 & 0.04  \\ \hline
-% 12   & 0.45K & 3 & 12   & 0.01 & 0.01 & 0.01  & 0.0     & 0.02 & 0.05  \\ \hline
-% 16   & 0.8K  & 2 & 16   & 0.01 & 0.02 & 0.01  & 0.01    & 0.02 & 0.07  \\ \hline
-% 16 	 & 0.8K  & 3 & 48   & 0.01 & 0.03 & 0.01  & 0.01    & 0.02 & 0.08  \\ \hline
-% 32   & 2.8K  & 2 & 32   & 0.01 & 0.1  & 0.01  & 0.01    & 0.02 & 0.15  \\ \hline
-% 48   & 6.4K  & 3 & 48   & 0.01 & 0.5  & 0.3   & 0.01    & 0.02 & 0.9   \\ \hline
-% 64   & 11.2K & 2 & 64   & 0.1  & 0.5  & 0.05  & 0.01    & 0.2  & 0.73  \\ \hline
-% 96   & 24.5K & 2 & 96   & 0.1  & 1.4  & 0.1   & 0.01    & 0.01 & 1.7   \\ \hline
-% 128  & 43.2K & 2 & 128  & 0.1  & 3.2  & 0.3   & 0.1     & 2.1  & 5.7   \\ \hline
-% 163  & 69.8K & 2 & 326  & 0.4  & 6.2  & 0.4   & 0.25    & 2.1  & 9     \\ \hline
-% 233  & 119K  & 2 & 466  & 0.3  & 13   & 0.6   & 0.3     & 0.01 & 14.3  \\ \hline
-% 283  & 190K  & 2 & 566  & 2    & 38   & 1.2   & 0.7     & 0.1  & 42.3  \\ \hline
-% 409  & 384K  & 2 & 818  & 2    & 190  & 2.1   & 1.5     & 0.1  & 195   \\ \hline
-% 571  & 827K  & 2 & 1042 & 3    & 2150 & 5.8   & 3.1     & 0.1  & 2162  \\ \hline
-% \end{tabular}
-% \end{table}
-% \begin{table}[hbt]
-% \centering
-% \caption{{\footnotesize Word-level multi-fix rectifiability check against word level specification. Time is in seconds; Benchmark = circuit architecture, $n$ = Datapath Size, \#Gates = No. of gates, K = $10^3$, $m$ = word length of patch function, $k$ = encompassing composite field size, PF = time for polynomial factorization and computing minpoly for the composite field, RC = time for rectification check}}
-% \label{ffvsspec}
-% \begin{tabular}{| c | c | c | c | c | c | c | c | c | c | c | c |} \hline
-% \multicolumn{6}{| c |}{Benchmark: Mastrovito} & \multicolumn{6}{ c |}{Benchmark: Montgomery} \\ \hline
-% {\textbf{$n$}} & {\textbf{\#Gates}} & {\textbf{$m$}} & {\textbf{$k$}} & {\textbf{PF}} & {\textbf{RC}} & {\textbf{$n$}} & {\textbf{\#Gates}} & {\textbf{$m$}} & {\textbf{$k$}} & {\textbf{PF}} & {\textbf{RC}}\\ \hline 
-% 12  & 0.45K & 2 & 12  & NA & 0.4 & 12  & 0.57K & 2  & 12 & NA  & \\ \hline
-% 16  & 0.8K & 2 & 16  & NA & 3.2 & 16  & 0.9K & 2  & 16 & NA  & \\ \hline
-% *16 & 0.8K & 3 & 48  & -- & -- & *16 & 0.9K & 3  & 48 & --  & --\\ \hline
-% *20 & 0.0 & 3 & 60  & -- & -- & *20 & 0.9K & 3  & 60 & --  & --\\ \hline
-% 32  & 2.8K & 2 & 32  & NA & 184 & 32  & 2.7K & 2  & 32 & NA  & \\ \hline
-% 48  & 6.4K & 3 & 48  & NA & -- & 48  & 5.5K & 3  & 48 & NA  & --\\ \hline
-% 64  & 11.2K & 2 & 64  & NA & -- & 64  & 9.6K & 2  & 64 & NA  & --\\ \hline
-% \multicolumn{6}{| c |}{Benchmark: Barrett} & \multicolumn{6}{ c |}{Benchmark: Point Addition} \\ \hline
-% {\textbf{$n$}} & {\textbf{\#Gates}} & {\textbf{$m$}} & {\textbf{$k$}} & {\textbf{PF}} & {\textbf{RC}} & {\textbf{$n$}} & {\textbf{\#Gates}} & {\textbf{$m$}} & {\textbf{$k$}} & {\textbf{PF}} & {\textbf{RC}}\\ \hline 
-% 8  & 0.45K & 2 & 8  & NA & -- & 8  & 0.57K & 2  & 8 & NA  & \\ \hline
-% *8  & 0.45K & 3 & 24  & NA & -- & *8  & 0.57K & 3  & 24 & NA  & \\ \hline
-% 16  & 0.8K & 2 & 16  & NA & -- & 16  & 0.9K & 2  & 16 & NA  & \\ \hline
-% *16 & 0.8K & 3 & 48  & -- & -- & *16 & 0.9K & 3  & 48 & --  & --\\ \hline
-% 32  & 2.8K & 2 & 32  & NA & -- & 32  & 2.7K & 2  & 32 & NA  & \\ \hline
-% 64  & 11.2K & 2 & 64  & NA & -- & 64  & 9.6K & 2  & 64 & NA  & --\\ \hline
-% \end{tabular}
-% \end{table}
+We implement our approach as a custom software by integrating PolyBori~\cite{pbori:JSC09} libraries,
+{\sc Singular}~\cite{DGPS_410} libraries, and a custom high level finite field engine.
+We utilize PolyBori’s reduction procedure to implement the division 
+$f\xrightarrow{F'_l\cup F'_{0}}_+ rem_l,$ $ 1 \leq l \leq 2^m$. The libraries from {\sc Singular} 
+are used to compute $P_k(X)$ and to model composite field characteristics.
+The custom finite field engine is employed in modeling bit-vector and coefficient computations,
+and is utilized in the overall decision procedure. The experiments are performed on a 3.5GHz 
+Intel(R) $\text{Core}^{\text{TM}}$ i7-4770K Quad-Core CPU with 32 GB RAM.
+
 Table~\ref{exptbl} presents the results of our approach when 
 performing the MFR check on two modular multipliers (Mastrovito and Montgomery), and circuits
 that perform Point Addition over elliptic curves. The MFR check is performed against 
 their respective polynomial specifications. 
 These designs form the core components for performing encryption, 
 decryption and authentication in Elliptic Curve Cryptography (ECC).
-Results show that the execution time for PF (Sec.~\ref{sec:comps}), PBS, and 
-VMS are independent of the nature of the bug.
-% The column RT signifies that, for cases with value Y, the $m$ targets for rectifiability check is
-%  chosen to lie very close to the gate output where the bug was introduced, while for cases with value N, the
-However, the execution time required for RC (Thm.~\ref{Thm:rect}) depends 
+These Benchmarks are taken from~\cite{lv:tcad2013} and synthesized using the {\it abc} 
+tool~\cite{abc} with a two input gate library.
+We introduce bugs in the synthesized netlists by means of gate and wiring 
+modifications at various topological levels: some closer to PIs, 
+some in the middle of the circuit, and some near POs.
+The column BO for each benchmark corresponds to the total number of faulty output bits 
+resulting from the gate and wiring modifications. 
+
+From the results table, column 2 ($n$) denotes the datapath size for the corresponding benchmark,
+and the columns marked $G$ denote the total number of gates for the respective synthesized netlists.
+ In our experiments, we check the rectifiability of circuits, where the number of targets
+is chosen from $m=\{2,3,5,7\}$. However, our approach doesn't constrain the number 
+of targets to check for rectifiability. For cases where the targets admit rectification 
+(Rows 1-10), the $m$ targets are chosen to lie very close to the gate outputs 
+where the bugs were introduced, while for the cases where the targets 
+do not admit rectification (Rows 11-18), the $m$ targets are chosen far 
+from the cone of influence where bugs were introduced.
+
+PBS denotes the time taken to build the ZDD models for the implementation
+and the specification of the corresponding 
+benchmarks using the Polybori engine. Column AM denotes the maximum
+resident memory size recorded for these models,  
+averaged across benchmarks for a given datapath size $n$.
+VMS denotes the time
+taken to perform verification, compute $P_k(X)$, and setup MFR check.
+The execution time required for RC (Thm.~\ref{Thm:rect}) depends 
 on the number ($m$) and selection of the targets in $W$, as well as the
 computed $P_k(X)$. This corresponds 
 to different sizes of remainders, i.e. the number of terms in $rem_l$. The larger the size, 
 the longer it takes to perform the rectification check. This is depicted in the table for 
 Montgomery multipliers, where the rectification check for the 409-bit* circuit takes 
 significantly longer than for the 571-bit$\td~\text{circuit}.$ 
-The latter half of Table~\ref{exptbl} (with column RT marked as N) presents 
-results when the chosen targets do not admit rectification.
 
-% The inconsistency in the execution times of MS and RC for larger benchmarks is due 
-% to the number of terms in $rem_l$'s, which is dependent
-% upon the placement of bugs.
 % For Mastrovito and Montgomery multipliers, the specification 
 % polynomial is given as $f: = A\times B \pmod{ P_n(X)}$, 
 % where $P_n(x)$ is a given primitive polynomial for the datapath size $n$. 
@@ -212,92 +141,13 @@ results when the chosen targets do not admit rectification.
 % checking the MFR in the most complex Point addition implementation block against
 % its specification $D= B^2\cdot(C + aZ_1^2)$. 
 
-We compare our approach against the cofactor reduction algorithm (Alg. 1) presented in~\cite{MF_Huang:DATE12}.
-We implemented the Alg. 1 of~\cite{MF_Huang:DATE12} using {\it abc/MiniSAT}. 
-Rectification check for circuits beyond 16-bits timed out (3 hours) during the final UNSAT check 
-on the benchmarks.  
-Hence, the comparison is omitted from the table. 
-% Another widely used
-% multiplier design is based on Barrett reduction, wherein a multiplier is designed in two steps:
-% multiplication $R = A \times B$ and a subsequent Barrett reduction $G = R \pmod{ P(x)}$.
-% \begin{table}[]
-% \centering
-% \caption{{\footnotesize Benchmark = Montgomery Multiplier}}
-% \label{movsspec}
-% \begin{tabular}{| c | c | c | c | c | c | c | c | c | c |} \hline
-% % \multicolumn{6}{| c |}{Benchmark: Mastrovito} & \multicolumn{6}{ c |}{Benchmark: Montgomery} \\ \hline
-% {\textbf{n}} & {\textbf{\#Gates}} & {\textbf{m}} & {\textbf{k}} & {\textbf{PF}} & {\textbf{PBS}} & {\textbf{VF}} & {\textbf{MS}} & {\textbf{RC}} & {\textbf{TE}}\\ \hline
-% % 12   & 0.45K & 2 & 12   & 0.01 & 0.01 & 0.01  & 0.0     & 0.01 & 0.04  \\ \hline
-% % 12   & 0.45K & 3 & 12   & 0.01 & 0.01 & 0.01  & 0.0     & 0.02 & 0.05  \\ \hline
-% 8    & 0.2K  & 2 & 8    & 0.01 & 0.01 & 0.01  & 0.0     & 0.06 & 0.09  \\ \hline
-% 16   & 0.9K  & 2 & 16   & 0.01 & 0.03 & 0.01  & 0.07    & 0.20 & 0.32  \\ \hline
-% 16 	 & 0.9K  & 3 & 48   & 0.01 & 0.03 & 0.01  & 0.08    & 3.01 & 3.15  \\ \hline
-% 32   & 2.8K  & 2 & 32   & 0.01 & 0.12 & 0.03  & 0.1     & 0.8  & 1.06    \\ \hline
-% % 48   & 6.4K  & 3 & 48   & 0.01 & 0.5  & 0.3   & 0.01    & 0.02 & 0.9   \\ \hline
-% 64   & 9.6K  & 2 & 64   & 0.1  & 0.5  & 0.21  & 2.4     & 23.9 & 27      \\ \hline
-% 96   & 21K   & 2 & 96   & 0.1  & 1.4  & 0.42  & 0.75    & 13.4 & 16      \\ \hline
-% 128  & 35.8K & 2 & 128  & 0.1  & 2.7  & 0.6   & 0.7     & 66   & 70      \\ \hline
-% 163  & 57.5K & 2 & 326  & 0.4  & 5.2  & 1.1   & 2.2    	& 295  & 305   \\ \hline
-% 192  & 82.1K & 2 & 192  & 0.4  & 10.8 & 2.5   & 3.9     & 238  & 256     \\ \hline
-% 233  & 112K  & 2 & 466  & 0.3  & 11.5 & 1.3   & 2.1     & 360  & 375     \\ \hline
-% 283  & 171K  & 2 & 566  & 2    & 35   & 3.1   & 6.1     & 1503 & 1549    \\ \hline
-% 409  & 340K  & 2 & 818  & 2    & 134  & 5.1   & 3.9     & 4920 & 5064    \\ \hline
-% % 571  & 827K  & 2 & 1042 & 3    & 2150 & 5.8   & 3.1     & 0.1  & 2162  \\ \hline
-% \end{tabular}
-% \end{table}
-% We are able to verify and debug the circuits for upto 64-bits within our
-% stipulated Time Out ($TO$)  period.
-% \subsection{Word level specification v/s Point addition implementation}
-% The design is implemented in terms of logic blocks and the most complex block is chosen for 
-% rectification check.
-% The polynomial specification for the same is given as $D= B^2\cdot(C + aZ_1^2)$. 
-% \begin{Example}
-%   %Consider point addition in L$\acute{o}$pez-Dahab (LD) projective
-%   %coordinate.
-%   Given an elliptic curve: $Y^2 + XYZ = X^3Z + aX^2Z^2 +
-%   bZ^4$ over $\mathbb{F}_{2^k}$, where $X,Y,Z \in \mathbb{F}_{2^k}$ and similarly, $a, b$ are
-%   constants from the field. Point addition over the
-%   elliptic curve is ($X_3$, $Y_3$, $Z_3$) = ($X_1$, $Y_1$, $Z_1$) +
-%   ($X_2$, $Y_2$, $1$).  Then $X_3$, $Y_3$, $Z_3$ can be computed as
-%   follows:
-% % {
-% % \vspace{-0.40in}
-% \begin{align*}
-% &A = Y_2 \cdot Z_1^2 + Y_1  &&B = X_2 \cdot Z_1 + X_1 \\
-% &C = Z_1 \cdot B  &&D = B^2 \cdot(C + a Z_1^2) \\
-% &Z_3 = C^2 && E = A \cdot C  \\
-% &X_3 = A^2 + D + E &&F = X_3 + X_2 \cdot Z_3 \\
-% &G = X_3 + Y_2\cdot Z_3 && Y_3 = E\cdot F + Z_3 \cdot G
-% \end{align*}
-% % }
-% \end{Example}
-% % \vspace{-0.1in}
-% Each of the polynomials in the above design are implemented as a
-% (gate-level) logic block and are interconnected to obtain final
-% outputs $X_3,Y_3$ and $Z_3$. 
-% \begin{table}[]
-% \centering
-% \caption{{\footnotesize Benchmark = Point Addition}}
-% \label{pavsspec}
-% \begin{tabular}{| c | c | c | c | c | c | c | c | c | c |} \hline
-% % \multicolumn{6}{| c |}{Benchmark: Mastrovito} & \multicolumn{6}{ c |}{Benchmark: Montgomery} \\ \hline
-% {\textbf{n}} & {\textbf{\#Gates}} & {\textbf{m}} & {\textbf{k}} & {\textbf{PF}} & {\textbf{PBS}} & {\textbf{VF}} & {\textbf{MS}} & {\textbf{RC}} & {\textbf{TE}}\\ \hline
-% 8    & 0.23K & 2 & 12   & 0.01 & 0.01 & 0.01  & 0.0     & 0.01 & 0.04  \\ \hline
-% % 12   & 0.45K & 3 & 12   & 0.01 & 0.01 & 0.01  & 0.0     & 0.02 & 0.05\\ \hline
-% 16   & 0.9K  & 2 & 16   & 0.01 & 0.05 & 0.01  & 0.02    & 0.06 & 0.15  \\ \hline
-% 16   & 0.9K  & 3 & 48   & 0.01 & 0.05 & 0.01  & 0.01    &  	   &   	 \\ \hline
-% 32   & 2.9K  & 2 & 32   & 0.01 & 0.17 & 0.03  & 0.01    & 0.98 & 1.2   \\ \hline
-% 48   & 6.4K  & 3 & 48   & 0.01 & 0.5  & 0.3   & 0.01    & 0.02 & 0.9   \\ \hline
-% 64   & 10.6K & 2 & 64   & 0.1  & 0.7  & 0.1   & 0.01    & 12.1 & 13.2  \\ \hline
-% 96   & 24.8K & 2 & 96   & 0.1  & 2.4  & 0.3   & 0.01    & 15.4 & 18.4  \\ \hline
-% 128  & 43.2K & 2 & 128  & 0.1  & 6.1  & 0.7   & 0.3     & 73   & 81    \\ \hline
-% 163  & 71.6K & 2 & 326  & 0.4  & 16.1 & 1.4   & 0.5     & 735  & 754   \\ \hline
-% 233  & 122K  & 2 & 466  & 0.3  & 19.2 & 1.2   & 0.3     & 0.15 & 21.5  \\ \hline
-% 283  & 208K  & 2 & 566  & 2    & 80.4 & 2.8   & 1.3    & 0.1  & 86.6   \\ \hline
-% 409  & 368K  & 2 & 818  & 2    &      &    &      &   &                \\ \hline
-% 571  & 813K  & 2 & 1042 & 3    &      &    &      &   &                \\ \hline
-% \end{tabular}
-% \end{table}
+We compare our approach against the cofactor reduction algorithm (Alg. 1) 
+presented in~\cite{MF_Huang:DATE12}. We implemented the Alg. 1 of~\cite{MF_Huang:DATE12} 
+using {\it abc/MiniSAT}. Empirical data shows that the rectification check for 
+circuits beyond 16-bits timed out (3 hours). Specifically, the final UNSAT 
+check on line 4 of the Alg. 1 is infeasible for the benchmarks
+presented in our results table and hence the comparision is omitted.   
+
 % \subsection{Word level specification v/s Barrett reduction implementation}
 % Barrett reduction
 % %~\cite{barrett}
@@ -343,11 +193,11 @@ Hence, the comparison is omitted from the table.
 \section{Conclusion}\label{sec:conc}
 This paper presents an automated approach using techniques from 
 symbolic computer algebra to determine multi-fix rectifiability of 
-buggy finite field arithmetic circuits at a given set of targets. 
+faulty finite field arithmetic circuits at a given set of targets. 
 The underlying theory and algorithms are based on \Grobner 
 basis reductions, the Strong Nullstellensatz principle, ideal membership testing,
 and finite fields.
-The efficiency our approach is derived by interpreting the targets 
+The efficiency of our approach is derived by interpreting the targets 
 as a bit-vector and enabling word-level reasoning.
 We propose new mathematical insights to overcome the
 challenges associated with formulating the problem over a composite field.
