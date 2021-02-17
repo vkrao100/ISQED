@@ -6,10 +6,9 @@ debugging and rectification are performed. Rectification entails
 identifying candidate nets (targets) %followed by a rectifiability check, 
 and determining whether the circuit can be patched at these 
 targets. If the targets admit rectification,
-%Once rectifiability at these nets is ascertained,
 corresponding rectification functions are computed which make 
 the $\impl$ conform to its $\spec$.
-This problem also manifests in engineering change orders (ECO) 
+This problem manifests itself in engineering change orders (ECO) 
 -- where a current $\impl$ needs to be
 rectified (preferably, with local modifications) to match the ECO-modified
 $\spec$. As a result, the problem
@@ -23,20 +22,12 @@ are infeasible for the rectification of arithmetic circuits.
 
 \par
 {\it This paper addresses the problem of ascertaining the rectifiability 
-of finite field arithmetic circuits with bugs at a given set of $m$ targets
-against a polynomial function (\spec)~over finite fields, such as
-those encountered in Elliptic Curve Cryptography}.
+of buggy finite field arithmetic circuits at a given set of $m$ targets
+against a polynomial function (\spec)~over finite fields}.
 Such circuits find application in cryptography and error-control
 codes. As arithmetic bugs may lead to security vulnerabilities
 \cite{crypto:bug_attacks}, their rectification is of utmost
 importance.
-% Our approach employs computer algebra
-% techniques over finite fields to identify whether the circuit
-% admits rectification at a given set of $m$ nets.
-% 
-% The problem is formulated at a high abstraction level
-% using bit-vector words, which allows us to determine the rectifiability 
-% of the circuit in an efficient manner.
 Our approach models the set of $m$ targets as a bit-vector, enabling 
 word-level reasoning, and utilizes techniques 
 from Symbolic Computer Algebra (SCA) to determine rectifiability. 
@@ -45,27 +36,6 @@ $m$ targets is beyond the scope of this paper. {\it Word-level
   rectifiability checking} for arithmetic circuits is a challenging
 problem in its own right, and this manuscript covers its various
 facets. 
- 
-% \par 
-% {\it Prior Work:} Contemporary approaches formulate rectification
-% using quantified Boolean formula solving,
-% %~\cite{scholl:2}, or using
-% Craig Interpolation (CI), or iterative SAT
-% solving~\cite{MF_Huang:DAC11,MF_Huang:DATE12,fujita:2015,SS_Fujita:ISQED17}.  
-% %  MF_Roland:ICCAD10,
-% Boolean function and SAT-based models are infeasible for rectification 
-% of buggy arithmetic circuits. Recent works attempt
-% rectification using computer algebra techniques for finite field 
-% circuits~\cite{Utkarsh:VLSI18,Vkrao:FMCAD18}, and also for integer
-% arithmetic circuits~\cite{farimah:2017:1,MF_Rolf:ISVLSI18}. 
-% However, these algebraic approaches address only
-% {\it single-fix} rectification -- where rectification is attempted
-% only at a {\it single net}. This is too restrictive, and depending on
-% the nature of the bugs, the circuit may not admit single-fix
-% rectification at all. In such cases, the correction has to be
-% attempted at multiple targets, say at $m$ distinct nets. This is
-% called {\it multi-fix} rectification in literature. The focus of
-% this paper is $m$-target {\it multi-fix rectifiability} (MFR) of finite field circuits. 
 
 \par 
 {\it Prior Work:}  
@@ -81,15 +51,10 @@ attempted at multiple targets. This is
 called {\it multi-fix} rectification in literature. The focus of
 this paper is $m$-target {\it multi-fix rectifiability} (MFR) of finite field circuits. 
 
-% where multiple nets are identified as rectification {\it targets}, and
-% corresponding rectification patches are computed. 
-% Contemporary techniques in multi-fix rectification assume
-% availability of target locations.
 \par 
 Contemporary approaches formulate the rectifiability 
 checking problem inherently as part of a rectification procedure. 
 They use quantified Boolean formula solving,
-%~\cite{scholl:2}, or using
 Craig Interpolation, or iterative SAT
 solving~\cite{MF_Huang:DATE12,SS_Fujita:ISCAS19,SS_Alan:DAC18}.  
 %  MF_Roland:ICCAD10,
@@ -99,7 +64,7 @@ solving~\cite{MF_Huang:DATE12,SS_Fujita:ISCAS19,SS_Alan:DAC18}.
 The approach~\cite{MF_Huang:DATE12} considers multiple targets simultaneously and 
 formulates the MFR check as a QBF. 
 The QBF is then translated to a SAT problem and solved iteratively using a cofactor reduction technique.
-More recent techniques use this QBF formulation coupled with heuristics which improve
+More recent techniques use this QBF formulation coupled with heuristics that improve
 resource awareness in patch generation \cite{SS_Alan:DAC18}, and the selection of effective targets \cite{SS_Fujita:ISCAS19}. 
 The recent symbolic sampling approach~\cite{SS_Roland:DAC19} uses simulation to 
 identify targets and ascertain rectifiability.
@@ -114,10 +79,6 @@ on arithmetic circuits. Our experiments show that contemporary SAT solvers fail 
 % modeling and analyzing Boolean reasoning queries in symbolic sampling domain. 
 % However, the authors do not discuss the application of the proposed technique to 
 % arithmetic circuits, hence an efficient/scalable solution is still desired.
-
-% the recent approach employs a sampling 
-
-
 % The signal selection heuristic (main contribution) proposed in \cite{SS_Roland:DAC19}
 % is orthogonal to the setup and approach presented in our paper.
 % However, the authors don't discuss the application of the proposed technique to 
@@ -180,11 +141,11 @@ proposed in~\cite{SS_Alan:DAC18,SS_Fujita:ISCAS19,SS_Roland:DAC19}.
 %also not {\it single-fix rectifiable} w.r.t. $f$. The approaches of
 %\cite{Utkarsh:VLSI18, Vkrao:FMCAD18} are therefore inapplicable; hence
 %MFR checking of $C$ is required. % so that $C$ matches $f$. 
-% {\it The objective is to decide whether the given set of $m$
-%   targets admit multi-fix rectification.} 
-%The circuit may or may not be rectifiable at these $m$ targets. This
-%MFR-check ascertains whether rectification functions exist that can
-%patch $C$ at these $m$-targets. 
+The circuit may or may not be rectifiable at these $m$ targets.
+{\it The objective is to check whether the given set of $m$
+  targets collectively admit multi-fix rectification.} 
+ This MFR-check ascertains whether rectification functions exist that can
+patch $C$ at these $m$-targets. 
 %ii) If $C$ admits MFR, then compute $m$-bit rectification
 %functions, along with corresponding don't care conditions, to
 %synthesize these functions and patch the circuit. 
@@ -233,7 +194,7 @@ This word-level formulation poses new mathematical challenges:
 the field $\Fkm$ might not be compatible with the field
 $\Fkn$, which prevents us from performing algebraic operations in a unified domain.
 We overcome this problem by computing the smallest single field $\Fkk$
-containing both $\Fkm, \Fkn$. This requires computing 
+containing both $\Fkm, \Fkn$. This requires the computation of  
 a specific primitive polynomial $P_k(X)$ for $\Fkk$. 
 % which allows us to perform algebraic operations in a unified framework. 
 We present an approach to compute

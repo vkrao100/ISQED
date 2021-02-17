@@ -1,6 +1,6 @@
 \section{Preliminaries: Notation and Background}\label{sec:prelim}
-This section reviews some basic concepts from symbolic computer
-algebra and associated algorithms that are utilized in this paper. 
+This section reviews some relevant concepts from finite fields, 
+symbolic computer algebra and associated algorithms that are utilized in this paper. 
 
 {\it Finite Field and Primitive Polynomial:}
 %Let $\B$ denote the Boolean domain, and $\neg, \wedge,\vee, \oplus$
@@ -49,8 +49,8 @@ Let $\F_{2^2} = \F_2[X]\pmod{
 their PEs. 
 
 Compute $\gamma^{2^l}$ for $l>0$: for
-$l=1,\gamma^{2^l}=\gamma^2$; $l=2, \gamma^{2^l}=\gamma^4$; $l=3,
-\gamma^{2^l}=\gamma^8$; $l=4, \gamma^{2^l}=\gamma^{16}=\gamma$. Since
+$l=1,\gamma^{2^l}=\gamma^2$; $l=2,\gamma^{2^l}=\gamma^4$; $l=3,
+~\gamma^{2^l}=\gamma^8$; $l=4, \gamma^{2^l}=\gamma^{16}=\gamma$. Since
 $\gamma^{16}=\gamma$ (the elements repeat), we have that $\{\gamma,
 \gamma^2, \gamma^4, \gamma^8\}$ are conjugates. Thus the minimal
 polynomial of $\gamma$ can be reconstructed as
@@ -61,7 +61,7 @@ $(X+\alpha)(X+\alpha^2)=P_2(X)$.
 
 Now consider the element $\gamma^5 \in \F_{2^4}$. Then $\gamma^{10}$
 is its only conjugate, and $(X+\gamma^5)(X+\gamma^{10}) =
-X^2+X+1=P_l(X)$. In other words, $\{0, 1, \alpha = \gamma^5, \alpha^2 =
+X^2+X+1=P_{2^2}(X)$. In other words, $\{0, 1, \alpha = \gamma^5, \alpha^2 =
 \gamma^{10}\}$ are the 4 elements of $\F_{2^2}$, also contained in
 $\F_{2^4}$; implying that $\F_{2^2} \subset \F_{2^4}$.
 }
@@ -222,7 +222,8 @@ V(J_2)$, and $V(J_1\cdot J_2) = V(J_1) \cup V(J_2)$.
 {\it \Grobner Bases:} An ideal $J$ may have many different sets of 
 generators/bases. %such that their varieties are the same.
 A \Grobner basis (GB) is one such generating set $G=\{g_1, \dots,
-g_t\}$ with special properties.
+g_t\}$ with special properties that alow to solve many polynomial
+decision problems.
 %  that help to solve
 % many polynomial decision and quantification problems. 
  % that is a canonical representation of the ideal. 

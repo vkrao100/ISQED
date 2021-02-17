@@ -97,17 +97,17 @@ tool~\cite{abc} with a two input gate library.
 We introduce bugs in the synthesized netlists by means of gate and wiring 
 modifications at various topological levels: some closer to PIs, 
 some in the middle of the circuit, and some near POs.
-The column BO for each benchmark corresponds to the total number of faulty output bits 
-resulting from the gate and wiring modifications. 
+The column BO for each benchmark corresponds to the total number of POs affected by the 
+gate and wiring modifications. 
 
-From the results table, column 2 ($n$) denotes the datapath size for the corresponding benchmark,
+In the results table, column 2 ($n$) denotes the datapath size for the corresponding benchmark,
 and the columns marked $G$ denote the total number of gates for the respective synthesized netlists.
  In our experiments, we check the rectifiability of circuits, where the number of targets
 is chosen from $m=\{2,3,5,7\}$. However, our approach doesn't constrain the number 
 of targets to check for rectifiability. For cases where the targets admit rectification 
 (Rows 1-10), the $m$ targets are chosen to lie very close to the gate outputs 
 where the bugs were introduced, while for the cases where the targets 
-do not admit rectification (Rows 11-18), the $m$ targets are chosen far 
+do not admit rectification (Rows 11-18), the $m$ targets are chosen away 
 from the cone of influence where bugs were introduced.
 
 PBS denotes the time taken to build the ZDD models for the implementation
@@ -119,8 +119,7 @@ VMS denotes the time
 taken to perform verification, compute $P_k(X)$, and setup MFR check.
 The execution time required for RC (Thm.~\ref{Thm:rect}) depends 
 on the number ($m$) and selection of the targets in $W$, as well as the
-computed $P_k(X)$. This corresponds 
-to different sizes of remainders, i.e. the number of terms in $rem_l$. The larger the size, 
+computed $P_k(X)$. These parameters result in different sizes of $rem_l$. The larger the size, 
 the longer it takes to perform the rectification check. This is depicted in the table for 
 Montgomery multipliers, where the rectification check for the 409-bit* circuit takes 
 significantly longer than for the 571-bit$\td~\text{circuit}.$ 
@@ -146,7 +145,7 @@ presented in~\cite{MF_Huang:DATE12}. We implemented the Alg. 1 of~\cite{MF_Huang
 using {\it abc/MiniSAT}. Empirical data shows that the rectification check for 
 circuits beyond 16-bits timed out (3 hours). Specifically, the final UNSAT 
 check on line 4 of the Alg. 1 is infeasible for the benchmarks
-presented in our results table and hence the comparision is omitted.   
+presented in our results table, and hence the comparision is omitted.   
 
 % \subsection{Word level specification v/s Barrett reduction implementation}
 % Barrett reduction

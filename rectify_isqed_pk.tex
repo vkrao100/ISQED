@@ -140,11 +140,10 @@ We now state the {\it multi-fix rectification theorem} that checks
 for the existence of $W = U(X_{PI})$ as a MFR function.
 
 \begin{Theorem}{[Multi-fix Rectification Theorem]}\label{Thm:rect}
-
 Given the specification polynomial $f$, and the implementation
 $C$ represented using the ideal $J' = \langle F'\rangle\subset R'$,
 where $F'=\{f_1,\dots,\bm{f_W:W+\sum_{i=0}^{m-1}\beta^i \cdot w_i},
-\dots,f_s\}$, and $J'_0=\langle F'_0\rangle$ the corresponding ideal
+\dots,f_s\}$, and $J'_0=\langle F'_0\rangle$ is the corresponding ideal
 of vanishing polynomials in $R'$. Impose WRTO $>_R$ on $R'$.
 %(Setup as described in Sec.\ref{sec:rsetup}),
 Construct the following ideals: 
@@ -241,24 +240,24 @@ RC = Required time for MFR check, TE = Required time for total execution }
 %\mb{16}  & \mb{3} & \mb{48}   & 0.03 & N & 0.8  & 0.04   & 0.02  & 0.02  & 0.11  & 0.9   &       &      &      &      & 0.9  &      &      &       &       \\ \hline
 %\mb{32 } & \mb{7} & \mb{224 } & 0.07 & N & 2.8  &        &       &       &       & 2.8   &       &      &      &      & 2.9  &      &      &       &       \\ \hline
 %\mb{163} & \mb{2} & \mb{326 } & 0.15 & Y & 69.8 & 6.25   &  0.68 & 2.0   & 9.08  & 57.5  & 5.2   & 3.3  & 295   & 305   & 71.6 & 16.1 & 1.9  & 735   & 754   \\ \hline
-1  & \mb{16}  & \mb{5} & \mb{80  } & 100 & 0.8  & 6  & 0.04 & 0.03  & 0.12  & 0.22 & 0.9  & 16  & 0.04 & 0.48 & 35.3     & 35.9 & 0.9  & 7   & 0.06 & 0.08 & 1.73 & 1.9  \\ \hline
-2  & \mb{32 } & \mb{5} & \mb{160 } & 120 & 2.8  & 8  & 0.13 & 0.06  & 0.4   & 0.65 & 2.8  & 32  & 0.13 & 0.54 & 27.6     & 28.3 & 2.9  & 13  & 0.18 & 0.53 & 134  & 135  \\ \hline
-3  & \mb{64 } & \mb{3} & \mb{192 } & 160 & 11.2 & 5  & 0.57 & 0.54  & 227   & 228  & 9.6  & 47  & 0.52 & 0.27 & 1.79     & 2.63 & 10.6 & 64  & 0.84 & 0.45 & 58.1 & 59.5 \\ \hline
-4  & \mb{96 } & \mb{2} & \mb{96  } & 240 & 24.5 & 5  & 1.47 & 0.21  & 0.83  & 2.56 & 21   & 96  & 1.36 & 1.19 & 13.3     & 15.9 & 24.8 & 96  & 2.46 & 0.57 & 14.9 & 18   \\ \hline
-5  & \mb{128} & \mb{2} & \mb{128 } & 370 & 43.2 & 5  & 3.23 & 0.4   & 2.03  & 5.76 & 35.8 & 128 & 2.8  & 1.3  & 64.2     & 68.4 & 43.2 & 128 & 6.45 & 1.55 & 72.8 & 81   \\ \hline
-6  & \mb{163} & \mb{5} & \mb{815 } & 550 & 69.8 & 6  & 6.04 & 1.03  & 11.9  & 21.3 & 57.5 & 128 & 5.19 & 4.34 & 262      & 274  & 71.6 & 22  & 15.7 & 2.31 & 15   & 35.4 \\ \hline
-7  & \mb{233} & \mb{2} & \mb{466 } & 750 & 119  & 3  & 13   & 1     & 0.01  & 14.2 & 112  & 233 & 11.5 & 3.4  & 360      & 375  & 122  & 233 & 19.2 & 1.5  & 0.15 & 21.5 \\ \hline
-8  & \mb{283} & \mb{2} & \mb{566 } & 1300& 190  & 2  & 38   & 1.9   & 0.1   & 42.3 & 171  & 283 & 35   & 9.2  & 1503     & 1549 & 208  & 4   & 80.4 & 4.1  & 0.1  & 86.6 \\ \hline
-9  & \mb{409} & \mb{2} & \mb{818 } & 2400& 384  & 2  & 190  & 3.6   & 0.1   & 195  & 340  & 409 & 134  & 9    & 4920*    & 5064 & 368  & 409 & 220  & 7    & 2007 & 2237 \\ \hline
-10 & \mb{571} & \mb{2} & \mb{1042} & 5000& 827  & 5  & 2150 & 8.9   & 0.1   & 2162 & 663  &  12 & 1313 & 73   & 0.2$\td$ & 1395 & 813  & 5   & 2583 & 17.7 & 880  & 3490 \\ \hline\hline
-11 & \mb{16}  & \mb{7} & \mb{112 } & 100 & 0.8  & 11 & 0.04 & 0.11  & 4.96  & 5.14 & 0.9  & 13  & 0.05 & 1.54 & 228      & 230  & 0.9  & 12  & 0.05 & 0.62 & 32.9 & 33.6 \\ \hline
-12 & \mb{32 } & \mb{5} & \mb{160 } & 120 & 2.8  & 8  & 0.13 & 0.04  & 0.81  & 1.03 & 2.8  & 32  & 0.13 & 0.95 & 100      & 101  & 2.9  & 13  & 0.18 & 0.71 & 244  & 245  \\ \hline
-13 & \mb{64 } & \mb{3} & \mb{192 } & 160 & 11.2 & 5  & 0.58 & 0.18  & 1.64  & 2.45 & 9.6  & 47  & 0.51 & 0.39 & 10.4     & 11.4 & 10.6 & 5   & 0.79 & 0.25 & 3.96 & 5.05 \\ \hline
-14 & \mb{96 } & \mb{2} & \mb{96  } & 240 & 24.5 & 5  & 1.48 & 0.2   & 0.04  & 1.77 & 21   & 96  & 1.34 & 2.04 & 87.5     & 90.9 & 24.8 & 96  & 2.44 & 0.62 & 35.5 & 38.6 \\ \hline
-15 & \mb{128} & \mb{2} & \mb{128 } & 370 & 43.2 & 5  & 3.21 & 0.43  & 0.1   & 3.84 & 35.8 & 128 & 2.7  & 1.3  & 66       & 70   & 43.2 & 128 & 6.1  & 1    & 73   & 81   \\ \hline
-16 & \mb{163} & \mb{5} & \mb{815 } & 550 & 69.8 & 6  & 6.3  & 1.06  & 12    & 21.7 & 57.5 & 128 & 5.31 & 5.26 & 524      & 537  & 71.6 & 22  & 15.8 & 2.46 & 37   & 57.6 \\ \hline
-17 & \mb{409} & \mb{2} & \mb{818 } & 2400& 384  & 2  & 208  & 3.76  & 0.03  & 212  & 340  & 13  & 127  & 6.76 & 0.13     & 135  & 368  & 3   & 210  & 8.04 & 928  & 1146 \\ \hline
-18 & \mb{571} & \mb{2} & \mb{1042} & 5000& 827  & 5  & 2246 & 8.53  & 0.11  & 2256 & 663  & 427 & 1358 & 62.3 & 2.24     & 1424 & 813  & 5   & 2433 & 16.7 & 4.94 & 2457 \\ \noalign{\hrule height 1pt}
+1  & \mb{16}  & \mb{5} & \mb{80  } & 100 & 0.8  & 6  & 0.04 & 0.06  & 0.12  & 0.22 & 0.9  & 16  & 0.04 & 0.56 & 35.6     & 36   & 0.9  & 7   & 0.06 & 0.11 & 1.73 & 1.9  \\ \hline
+2  & \mb{32 } & \mb{5} & \mb{160 } & 120 & 2.8  & 8  & 0.13 & 0.12  & 0.4   & 0.65 & 2.8  & 32  & 0.13 & 0.57 & 27.6     & 28.3 & 2.9  & 13  & 0.18 & 0.8  & 134  & 135  \\ \hline
+3  & \mb{64 } & \mb{3} & \mb{192 } & 160 & 11.2 & 5  & 0.57 & 0.45  & 227   & 228  & 9.6  & 47  & 0.52 & 0.32 & 1.79     & 2.63 & 10.6 & 64  & 0.84 & 0.56 & 58.1 & 59.5 \\ \hline
+4  & \mb{96 } & \mb{2} & \mb{96  } & 240 & 24.5 & 5  & 1.47 & 0.26  & 0.83  & 2.56 & 21   & 96  & 1.36 & 1.27 & 13.3     & 16   & 24.8 & 96  & 2.46 & 0.64 & 14.9 & 18   \\ \hline
+5  & \mb{128} & \mb{2} & \mb{128 } & 370 & 43.2 & 5  & 3.23 & 0.5   & 2.03  & 5.76 & 35.8 & 128 & 2.8  & 1.4  & 64.2     & 68.4 & 43.2 & 128 & 6.45 & 1.55 & 73   & 81   \\ \hline
+6  & \mb{163} & \mb{5} & \mb{815 } & 550 & 69.8 & 6  & 6.04 & 3.36  & 11.9  & 21.3 & 57.5 & 128 & 5.2  & 6.8  & 262      & 274  & 71.6 & 22  & 15.7 & 4.7  & 15   & 35.4 \\ \hline
+7  & \mb{233} & \mb{2} & \mb{466 } & 750 & 119  & 3  & 13   & 1.2   & 0.01  & 14.2 & 112  & 233 & 11.5 & 3.5  & 360      & 375  & 122  & 233 & 19.2 & 2.15 & 0.15 & 21.5 \\ \hline
+8  & \mb{283} & \mb{2} & \mb{566 } & 1300& 190  & 2  & 38   & 4.2   & 0.1   & 42.3 & 171  & 283 & 35   & 11   & 1503     & 1549 & 208  & 4   & 80.4 & 6.1  & 0.1  & 86.6 \\ \hline
+9  & \mb{409} & \mb{2} & \mb{818 } & 2400& 384  & 2  & 190  & 5     & 0.1   & 195  & 340  & 409 & 134  & 10   & 4920*    & 5064 & 368  & 409 & 220  & 10   & 2007 & 2237 \\ \hline
+10 & \mb{571} & \mb{2} & \mb{1042} & 5000& 827  & 5  & 2150 & 12    & 0.1   & 2162 & 663  &  12 & 1313 & 82   & 0.2$\td$ & 1395 & 813  & 5   & 2583 & 27   & 880  & 3490 \\ \hline\hline
+11 & \mb{16}  & \mb{7} & \mb{112 } & 100 & 0.8  & 11 & 0.04 & 0.17  & 4.96  & 5.14 & 0.9  & 13  & 0.05 & 2    & 228      & 230  & 0.9  & 12  & 0.05 & 0.55 & 33   & 33.6 \\ \hline
+12 & \mb{32 } & \mb{5} & \mb{160 } & 120 & 2.8  & 8  & 0.13 & 0.09  & 0.81  & 1.03 & 2.8  & 32  & 0.13 & 0.9  & 100      & 101  & 2.9  & 13  & 0.18 & 0.8  & 244  & 245  \\ \hline
+13 & \mb{64 } & \mb{3} & \mb{192 } & 160 & 11.2 & 5  & 0.58 & 0.23  & 1.64  & 2.45 & 9.6  & 47  & 0.51 & 0.6  & 10.4     & 11.4 & 10.6 & 5   & 0.8  & 0.2  & 4    & 5 \\ \hline
+14 & \mb{96 } & \mb{2} & \mb{96  } & 240 & 24.5 & 5  & 1.48 & 0.25  & 0.04  & 1.77 & 21   & 96  & 1.34 & 2.16 & 87.5     & 91   & 24.8 & 96  & 2.44 & 0.66 & 35.5 & 38.6 \\ \hline
+15 & \mb{128} & \mb{2} & \mb{128 } & 370 & 43.2 & 5  & 3.21 & 0.53  & 0.1   & 3.84 & 35.8 & 128 & 2.7  & 1.3  & 66       & 70   & 43.2 & 128 & 6    &  2   & 73   & 81   \\ \hline
+16 & \mb{163} & \mb{5} & \mb{815 } & 550 & 69.8 & 6  & 6.3  & 3.4   & 12    & 21.7 & 57.5 & 128 & 5.3  & 7.7  & 524      & 537  & 71.6 & 22  & 16   &  4.6 & 37   & 57.6 \\ \hline
+17 & \mb{409} & \mb{2} & \mb{818 } & 2400& 384  & 2  & 208  & 4     & 0.03  & 212  & 340  & 13  & 127  & 7.9  & 0.13     & 135  & 368  & 3   & 210  &  8   & 928  & 1146 \\ \hline
+18 & \mb{571} & \mb{2} & \mb{1042} & 5000& 827  & 5  & 2246 & 10    & 0.11  & 2256 & 663  & 427 & 1358 & 63.8 & 2.24     & 1424 & 813  & 5   & 2433 &  19  & 5    & 2457 \\ \noalign{\hrule height 1pt}
 \end{tabular}
 }
 \end{table*}
@@ -268,8 +267,9 @@ RC = Required time for MFR check, TE = Required time for total execution }
 %\end{Proof}
 
 A detailed proof of the above theorem can be devised using the
-ideal-variety correspondences. However, the proof is omitted due to
-the strict page  limit on the manuscript. Instead, we explain the
+Nullstellensatz, the circuit structure, and the 
+ideal-variety correspondences. However, the proof is omitted for brevity. 
+Instead, we explain the
 intuition behind Thm.~\ref{Thm:rect}, and show how it can be applied
 for MFR check.
 
@@ -279,8 +279,8 @@ a leading term of some polynomial in $F'$. However, as primary inputs
 cannot be gate outputs, they do not appear as a leading term
 of any polynomial. As a result, the computation
 $f\xrightarrow{F'_l\cup F'_0}_+rem_l$ cancels all non primary input
-variables during polyomial division, and results in remainders with
-only primary inputs in their support. Hence, $V(rem_l) \subseteq
+variables during polyomial division, and results in remainders composed of 
+only primary inputs as their support. Hence, $V(rem_l) \subseteq
 \F_{2}^{|X_{PI}|}$. The variety of  $rem_l$  corresponds to the set of
 assignments to primary inputs $X_{PI}$ (minterms) where the
 specification $f$ agrees with the implementation $C$. Thus, the
